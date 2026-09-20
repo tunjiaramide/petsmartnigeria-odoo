@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Wholesale pricelist: assigned to a customer when staff approve the account -->
+    <record id="pricelist_wholesale" model="product.pricelist">
+        <field name="name">Wholesale (NGN)</field>
+        <field name="currency_id" ref="base.NGN"/>
+        <field name="company_id" eval="False"/>
+        <field name="selectable" eval="False"/>
+    </record>
+
+    <!-- Business rules editable in Settings > Technical > System Parameters -->
+    <record id="param_min_order_amount" model="ir.config_parameter">
+        <field name="key">petmart.min_order_amount</field>
+        <field name="value">50000</field>
+    </record>
+    <record id="param_new_arrival_days" model="ir.config_parameter">
+        <field name="key">petmart.new_arrival_days</field>
+        <field name="value">30</field>
+    </record>
+
+    <!-- 2% incentive on every website order -->
+    <record id="loyalty_online_order_2pct" model="loyalty.program">
+        <field name="name">Online order discount (2%)</field>
+        <field name="program_type">promotion</field>
+        <field name="trigger">auto</field>
+        <field name="applies_on">current</field>
+        <field name="ecommerce_ok" eval="True"/>
+        <field name="currency_id" ref="base.NGN"/>
+        <field name="company_id" eval="False"/>
+        <field name="rule_ids" eval="[(0, 0, {
+            'reward_point_mode': 'order',
+            'reward_point_amount': 1,
+            'minimum_amount': 0,
+        })]"/>
+        <field name="reward_ids" eval="[(0, 0, {
+            'reward_type': 'discount',
+            'discount': 2,
+            'discount_mode': 'percent',
+            'discount_applicability': 'order',
+            'required_points': 1,
+            'description': 'Online order discount (2%)',
+        })]"/>
+    </record>
+
+    <!-- Detect "Back in stock" products -->
+    <record id="cron_back_in_stock" model="ir.cron">
+        <field name="name">PETSMART: flag back-in-stock products</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_petmart_back_in_stock()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Naira sign before the amount: ₦92,000.00 (Odoo's default puts it after).
+         base.NGN is a "noupdate" record, so it is written explicitly instead of redefined. -->
+    <function model="res.currency" name="write">
+        <value eval="[ref('base.NGN')]"/>
+        <value eval="{'active': True, 'position': 'before'}"/>
+    </function>
+
+</odoo>

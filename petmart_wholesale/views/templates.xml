@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Reusable availability badge: AVAILABLE / LOW STOCK / OUT OF STOCK.
+         Never prints a quantity. Usage: <t t-call="petmart_wholesale.stock_badge"><t t-set="product" .../></t> -->
+    <template id="stock_badge" name="PETSMART stock badge">
+        <t t-set="_status" t-value="product.sudo().petmart_stock_status"/>
+        <span t-if="_status == 'available'" class="pm-stock pm-stock--ok">Available</span>
+        <span t-elif="_status == 'low'" class="pm-stock pm-stock--low">Low stock</span>
+        <span t-elif="_status == 'out'" class="pm-stock pm-stock--out">Out of stock</span>
+        <span t-if="product.sudo().petmart_is_new" class="pm-tag pm-tag--new">New arrival</span>
+        <span t-if="product.sudo().petmart_is_back_in_stock and _status != 'out'" class="pm-tag pm-tag--back">Back in stock</span>
+    </template>
+
+    <!-- Badge on every shop tile -->
+    <template id="products_item_petmart" inherit_id="website_sale.products_item">
+        <xpath expr="//h2[hasclass('o_wsale_products_item_title')]" position="before">
+            <div class="pm-badges mb-1">
+                <t t-call="petmart_wholesale.stock_badge">
+                    <t t-set="product" t-value="product"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Registration form: business details for the approval screening -->
+    <template id="signup_business_fields" inherit_id="auth_signup.signup" name="Wholesale registration fields">
+        <xpath expr="//div[hasclass('field-login')]" position="after">
+            <t t-if="not token">
+                <div class="mb-3 field-company">
+                    <label for="company_name" class="form-label">Business name</label>
+                    <input type="text" name="company_name" id="company_name" class="form-control"
+                           t-att-value="company_name" required="required" placeholder="Your pet shop / clinic / distributor"/>
+                </div>
+                <div class="mb-3 field-phone">
+                    <label for="phone" class="form-label">Phone number</label>
+                    <input type="tel" name="phone" id="phone" class="form-control"
+                           t-att-value="phone" required="required" placeholder="0800 000 0000"/>
+                </div>
+                <div class="mb-3 field-street">
+                    <label for="street" class="form-label">Business address</label>
+                    <input type="text" name="street" id="street" class="form-control" t-att-value="street"/>
+                </div>
+                <div class="mb-3 field-vat">
+                    <label for="vat" class="form-label">RC / Tax ID (optional)</label>
+                    <input type="text" name="vat" id="vat" class="form-control" t-att-value="vat"/>
+                </div>
+                <p class="text-muted small">
+                    Wholesale accounts are reviewed before prices and ordering are unlocked.
+                </p>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Status page for customers who are signed in but not yet approved -->
+    <template id="pending_page" name="Wholesale account status">
+        <t t-call="website.layout">
+            <div id="wrap" class="pm-status container py-5">
+                <div class="pm-status__card mx-auto text-center">
+                    <t t-if="wholesale_state == 'pending'">
+                        <h1>Your wholesale application is under review</h1>
+                        <p class="lead">Thank you for registering. Our team screens every business account before
+                            wholesale prices and ordering are unlocked. We will email you as soon as you are approved.</p>
+                    </t>
+                    <t t-elif="wholesale_state == 'rejected'">
+                        <h1>We could not approve this application</h1>
+                        <p class="lead">Please contact our team so we can review your details again.</p>
+                        <form action="/wholesale/apply" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <button class="btn btn-primary" type="submit">Re-apply</button>
+                        </form>
+                    </t>
+                    <t t-else="">
+                        <h1>Open a wholesale account</h1>
+                        <p class="lead">Wholesale pricing is available to approved businesses only.</p>
+                        <form action="/wholesale/apply" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <button class="btn btn-primary" type="submit">Apply for wholesale access</button>
+                        </form>
+                    </t>
+                    <p class="mt-4"><a href="/contactus">Contact us</a></p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

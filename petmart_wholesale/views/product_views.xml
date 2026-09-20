@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Warehouse staff see exact quantities on the product form (built in);
+         this adds the customer-facing rule next to it. -->
+    <record id="product_template_form_petmart" model="ir.ui.view">
+        <field name="name">product.template.form.petmart</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_sale.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_published'][@widget='boolean_toggle']" position="after">
+                <field name="petmart_brand"/>
+                <field name="petmart_stock_status" widget="badge"
+                       decoration-success="petmart_stock_status == 'available'"
+                       decoration-warning="petmart_stock_status == 'low'"
+                       decoration-danger="petmart_stock_status == 'out'"/>
+                <field name="petmart_low_stock_threshold"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

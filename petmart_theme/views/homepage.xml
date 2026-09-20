@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="homepage" inherit_id="website.homepage" name="PETSMART homepage" priority="99">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="pm-home">
+                <t t-set="pm_state" t-value="website._petmart_wholesale_state()"/>
+                <t t-set="pm_can_shop" t-value="website.has_ecommerce_access()"/>
+
+                <!-- Hero carousel -->
+                <section class="container pm-section">
+                    <div id="pmHero" class="carousel slide pm-hero" data-bs-ride="carousel" data-bs-interval="6000">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="pm-hero__slide">
+                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
+                                    <div class="pm-hero__copy">
+                                        <span class="pm-eyebrow">PETSMART NIGERIA · EVERYTHING YOUR PET BUSINESS NEEDS</span>
+                                        <h1>Stock Up &amp; Save</h1>
+                                        <p>Quality pet products at competitive prices, sourced for Nigerian homes and pet businesses alike.</p>
+                                        <a href="/shop" class="pm-btn pm-btn--orange">Shop Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="pm-hero__slide">
+                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
+                                    <div class="pm-hero__copy">
+                                        <span class="pm-eyebrow">WHOLESALE PRICING</span>
+                                        <h1>Better margins for your shelves</h1>
+                                        <p>Open a business account and unlock wholesale prices on food, treats, litter and grooming.</p>
+                                        <a href="/web/signup" class="pm-btn pm-btn--orange">Open an Account</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="pm-hero__slide">
+                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
+                                    <div class="pm-hero__copy">
+                                        <span class="pm-eyebrow">NEW ARRIVALS</span>
+                                        <h1>Fresh stock, just landed</h1>
+                                        <p>Be the first to stock the newest food and accessories from top brands.</p>
+                                        <a href="/shop?order=create_date+desc" class="pm-btn pm-btn--orange">See What's New</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-indicators pm-hero__dots">
+                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="0" class="active" aria-label="Slide 1"/>
+                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="1" aria-label="Slide 2"/>
+                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="2" aria-label="Slide 3"/>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Info cards -->
+                <section class="container pm-section pm-info">
+                    <div class="pm-info__card">
+                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="user"/></span>
+                        <div>
+                            <b t-if="pm_state == 'public'">Welcome to PETSMART</b>
+                            <b t-else="">Welcome back, <t t-out="request.env.user.name"/></b>
+                            <a t-if="pm_state == 'public'" href="/web/login">Sign in →</a>
+                            <a t-elif="pm_state == 'approved'" href="/my">My account →</a>
+                            <a t-else="" href="/wholesale/pending">Application status →</a>
+                        </div>
+                    </div>
+                    <div class="pm-info__card pm-info__card--tint">
+                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="clipboard"/></span>
+                        <div>
+                            <b>Wholesale pricing for approved businesses</b>
+                            <a href="/web/signup">Open a wholesale account →</a>
+                        </div>
+                    </div>
+                    <div class="pm-info__card pm-info__card--tint">
+                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span>
+                        <div>
+                            <b>Easy nationwide delivery</b>
+                            <small>To every state, right to your door</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Who are you shopping for -->
+                <section class="container pm-section">
+                    <h2 class="pm-h2">Who are you shopping for today?</h2>
+                    <div class="pm-pets">
+                        <a t-foreach="[('cat_dog','dog','Dog','blue'),('cat_cat','cat','Cat','peach'),('cat_bird','bird','Bird','mint'),('cat_fish','fish','Fish','blue'),('cat_small_pet','small','Small Pet','sand'),('cat_reptile','reptile','Reptiles','mint')]"
+                           t-as="p" t-attf-class="pm-pet-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + p[0]).sudo())">
+                            <span t-attf-class="pm-bubble pm-bubble--#{p[3]}"><t t-call="petmart_theme.pet_face"><t t-set="pet" t-value="p[1]"/></t></span>
+                            <span t-out="p[2]"/>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Wholesale banner -->
+                <section class="container pm-section">
+                    <div class="pm-banner">
+                        <div class="pm-banner__art"><t t-call="petmart_theme.pet_scene"/></div>
+                        <div class="pm-banner__copy">
+                            <h2>Wholesale prices. Better margins.</h2>
+                            <p>Get competitive pricing when you stock up for your business — from single stores to multi-location retailers.</p>
+                            <a href="/shop" class="pm-btn pm-btn--blue">Shop Wholesale</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Popular categories -->
+                <section class="container pm-section">
+                    <h2 class="pm-h2">Explore popular categories</h2>
+                    <div class="pm-cats">
+                        <a t-foreach="[('cat_dog_food','bag','Dog Food'),('cat_dog_treats','bone','Dog Treats'),('cat_cat_food','can','Cat Food'),('cat_cat_litter','litter','Cat Litter'),('cat_grooming','scissors','Grooming')]"
+                           t-as="c" class="pm-cat-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + c[0]).sudo())">
+                            <span class="pm-bubble pm-bubble--blue pm-bubble--sm"><t t-call="petmart_theme.icon" name.f="bag" t-if="c[1] == 'bag'"/><t t-call="petmart_theme.icon" name.f="bone" t-elif="c[1] == 'bone'"/><t t-call="petmart_theme.icon" name.f="can" t-elif="c[1] == 'can'"/><t t-call="petmart_theme.icon" name.f="litter" t-elif="c[1] == 'litter'"/><t t-call="petmart_theme.icon" name.f="scissors" t-else=""/></span>
+                            <span t-out="c[2]"/>
+                        </a>
+                        <a class="pm-cat-link" href="/shop?order=create_date+desc">
+                            <span class="pm-bubble pm-bubble--peach pm-bubble--sm"><t t-call="petmart_theme.icon" name.f="percent"/></span>
+                            <span>Deals</span>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Everything banner -->
+                <section class="container pm-section">
+                    <div class="pm-banner">
+                        <div class="pm-banner__art"><t t-call="petmart_theme.pet_scene"/></div>
+                        <div class="pm-banner__copy">
+                            <h2>Everything your pet business needs.</h2>
+                            <p>Shop food, treats, litter, grooming supplies, accessories and more all in one place, built for Nigerian pet businesses.</p>
+                            <a href="/shop" class="pm-btn pm-btn--orange">Shop All Products</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pet business made easy -->
+                <section class="container pm-section">
+                    <h2 class="pm-h2">Pet business made easy</h2>
+                    <div class="pm-features">
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="cart"/></span><b>Easy Online Ordering</b><p>Reorder in a few taps, save your favorite lists.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span><b>Reliable Nationwide Delivery</b><p>Fast, tracked delivery to every state in Nigeria.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="headset"/></span><b>Business Support</b><p>Dedicated account help for wholesale partners.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="refresh"/></span><b>Easy Reordering</b><p>Set up autoship so your shelves never run dry.</p></div>
+                    </div>
+                </section>
+
+                <!-- Wholesale bestsellers: visible to everyone; PRICES and ordering only for approved, signed-in customers -->
+                <section class="container pm-section">
+                    <div class="pm-h2-row">
+                        <h2 class="pm-h2">Wholesale Bestsellers</h2>
+                        <a href="/shop" class="pm-link">View all →</a>
+                    </div>
+                    <!-- sudo only when the visitor cannot shop: the catalogue is shown, but no price is ever read -->
+                    <t t-set="pm_products" t-value="request.env['product.template'].sudo(not pm_can_shop).search(website.sale_product_domain() + [('is_published', '=', True)], order='website_sequence asc, id desc', limit=5)"/>
+                    <t t-set="pm_login_href" t-value="'/web/login?redirect=/shop' if pm_state == 'public' else '/wholesale/pending'"/>
+                    <div class="pm-products">
+                        <t t-foreach="pm_products" t-as="product">
+                            <t t-if="pm_can_shop" t-set="pm_info" t-value="product._get_combination_info(only_template=True)"/>
+                            <article class="pm-card">
+                                <a class="pm-card__img" t-att-href="product.website_url if pm_can_shop else pm_login_href">
+                                    <span t-if="pm_can_shop and pm_info.get('has_discounted_price')" class="pm-ribbon">Deal</span>
+                                    <img t-if="product.image_128" t-att-src="website.image_url(product, 'image_512')" t-att-alt="product.name" loading="lazy"/>
+                                    <t t-else=""><t t-call="petmart_theme.icon" name.f="bag"/></t>
+                                </a>
+                                <small class="pm-card__brand" t-out="product.petmart_brand or ''"/>
+                                <a class="pm-card__name" t-att-href="product.website_url if pm_can_shop else pm_login_href" t-out="product.name"/>
+                                <div class="pm-card__price">
+                                    <t t-if="pm_can_shop">
+                                        <b t-out="pm_info['price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+                                        <s t-if="pm_info.get('has_discounted_price')" t-out="pm_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+                                    </t>
+                                    <a t-else="" class="pm-card__lock" t-att-href="pm_login_href">
+                                        <t t-call="petmart_theme.icon" name.f="lock"/>
+                                        <span t-if="pm_state == 'public'">Sign in to see price</span>
+                                        <span t-else="">Available after approval</span>
+                                    </a>
+                                </div>
+                                <div class="pm-badges"><t t-call="petmart_wholesale.stock_badge"><t t-set="product" t-value="product"/></t></div>
+                                <button t-if="pm_can_shop" type="button" class="pm-btn pm-btn--blue pm-btn--block pm-add"
+                                        t-att-data-product-template-id="product.id"
+                                        t-att-data-product-id="product.product_variant_id.id"
+                                        t-att-disabled="'disabled' if product.petmart_stock_status == 'out' and not product.allow_out_of_stock_order else None">Add to Cart</button>
+                                <a t-else="" class="pm-btn pm-btn--blue pm-btn--block" t-att-href="pm_login_href">
+                                    <t t-if="pm_state == 'public'">Sign in to order</t><t t-else="">View status</t>
+                                </a>
+                            </article>
+                        </t>
+                    </div>
+                    <div t-if="not pm_can_shop" class="pm-locked mt-3">
+                        <span class="pm-locked__icon"><t t-call="petmart_theme.icon" name.f="lock"/></span>
+                        <div>
+                            <b t-if="pm_state == 'public'">Sign in to see wholesale prices</b>
+                            <b t-elif="pm_state == 'pending'">Your account is being reviewed</b>
+                            <b t-else="">Wholesale access required</b>
+                            <p>Prices and ordering are available to approved business accounts.</p>
+                        </div>
+                        <a t-if="pm_state == 'public'" href="/web/login" class="pm-btn pm-btn--blue">Sign in</a>
+                        <a t-if="pm_state == 'public'" href="/web/signup" class="pm-btn pm-btn--orange">Open an account</a>
+                        <a t-else="" href="/wholesale/pending" class="pm-btn pm-btn--blue">View status</a>
+                    </div>
+                </section>
+
+                <!-- CTA band -->
+                <section class="container pm-section">
+                    <div class="pm-cta">
+                        <div>
+                            <h2>Keep your shelves stocked.</h2>
+                            <p>Reliable pet-product supply for growing businesses, delivered on your schedule.</p>
+                            <a href="/shop" class="pm-btn pm-btn--orange">Shop Now</a>
+                        </div>
+                        <div class="pm-cta__art"><t t-call="petmart_theme.pet_scene"/></div>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Dog + cat illustration used in banners -->
+    <template id="pet_scene" name="PETSMART pet scene">
+        <div class="pm-scene">
+            <span class="pm-scene__disc"/>
+            <t t-call="petmart_theme.pet_face" pet.f="dog"/>
+            <t t-call="petmart_theme.pet_face" pet.f="cat"/>
+            <span class="pm-scene__box pm-scene__box--orange"/>
+            <span class="pm-scene__box pm-scene__box--blue"/>
+        </div>
+    </template>
+
+</odoo>

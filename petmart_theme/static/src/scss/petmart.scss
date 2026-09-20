@@ -1,0 +1,194 @@
+$pm-blue: #1a47b8;
+$pm-blue-dark: #0f2a6b;
+$pm-navy: #0c2160;
+$pm-orange: #ff7a45;
+$pm-ink: #0b1b3f;
+$pm-muted: #5d6b8a;
+$pm-tint: #eef3fd;
+$pm-line: #e1e8f5;
+$pm-green: #1c8a4b;
+$pm-radius: 18px;
+
+body, .pm-header, .pm-home, .pm-footer, .pm-status {
+    font-family: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.pm-home { color: $pm-ink; background: #fff; padding-bottom: 3rem; }
+#wrapwrap main, #wrapwrap #wrap.pm-home { background-color: #fff; }
+.pm-icon { width: 1.25em; height: 1.25em; flex: none; }
+.pm-section { margin-top: 2rem; }
+
+/* ---------- Header ---------- */
+.pm-header a { text-decoration: none; }
+.pm-header__row { display: flex; align-items: center; gap: 1.5rem; }
+.pm-header__top { background: $pm-blue; color: #fff; padding: .85rem 0; }
+.pm-logo { display: flex; align-items: center; gap: .6rem; color: #fff; flex: none;
+    &:hover { color: #fff; }
+    &__mark { background: $pm-orange; border-radius: 10px; width: 2.3rem; height: 2.3rem; display: grid; place-items: center;
+        .pm-icon { width: 1.4rem; height: 1.4rem; } }
+    &__text { display: flex; flex-direction: column; line-height: 1;
+        strong { font-size: 1.05rem; letter-spacing: .04em; sup { font-size: .5em; } }
+        small { font-size: .6rem; letter-spacing: .18em; opacity: .85; margin-top: .2rem; } }
+}
+.pm-search { flex: 1; position: relative; max-width: 40rem;
+    input { width: 100%; border: 0; border-radius: 999px; padding: .75rem 3.4rem .75rem 1.2rem; font-size: .9rem; outline: none; color: $pm-ink; }
+    button { position: absolute; right: .3rem; top: 50%; transform: translateY(-50%); border: 0; background: $pm-orange; color: #fff;
+        border-radius: 50%; width: 2.3rem; height: 2.3rem; display: grid; place-items: center; cursor: pointer; }
+}
+.pm-header__actions { display: flex; align-items: center; gap: 1.1rem; margin-left: auto; }
+.pm-action { display: flex; align-items: center; gap: .45rem; color: #fff; font-size: .8rem; position: relative;
+    &:hover { color: #fff; opacity: .85; }
+    span { display: flex; flex-direction: column; line-height: 1.15; small { font-size: .62rem; opacity: .75; } }
+    &--quiet { opacity: .9; }
+}
+.pm-cart sup { position: absolute; top: -.55rem; left: .8rem; background: $pm-orange; color: #fff; border-radius: 999px; font-size: .6rem; min-width: 1rem; height: 1rem; display: grid; place-items: center; padding: 0 .25rem; }
+.pm-header__nav { background: $pm-blue-dark; color: #fff; }
+.pm-header__nav .pm-header__row { justify-content: space-between; padding-top: .55rem; padding-bottom: .55rem; }
+.pm-nav { list-style: none; display: flex; gap: 1.6rem; margin: 0; padding: 0; overflow-x: auto; white-space: nowrap;
+    a { color: #fff; font-size: .82rem; font-weight: 500; &:hover { opacity: .8; } }
+    &__deals { color: #ffb08c !important; }
+}
+.pm-pill { background: $pm-orange; color: #fff !important; border-radius: 999px; padding: .4rem 1rem; font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; gap: .35rem; flex: none;
+    .pm-icon { width: .9rem; height: .9rem; } }
+.pm-header__promo { background: #e5f6ec; color: $pm-green; text-align: center; font-size: .78rem; font-weight: 500; padding: .55rem 1rem; display: flex; gap: .5rem; align-items: center; justify-content: center;
+    .pm-icon { width: 1rem; height: 1rem; } }
+
+/* ---------- Buttons / type ---------- */
+.pm-btn { display: inline-block; border: 0; border-radius: 10px; padding: .7rem 1.5rem; font-weight: 600; font-size: .85rem; color: #fff !important; text-decoration: none; cursor: pointer; transition: transform .12s, filter .12s;
+    &:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    &[disabled] { opacity: .45; pointer-events: none; }
+    &--orange { background: $pm-orange; } &--blue { background: $pm-blue; } &--block { display: block; width: 100%; text-align: center; } }
+.pm-h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1.1rem; }
+.pm-h2-row { display: flex; align-items: baseline; justify-content: space-between; .pm-h2 { margin-bottom: 1.1rem; } }
+.pm-link { color: $pm-blue; font-size: .8rem; font-weight: 600; text-decoration: none; }
+.pm-eyebrow { color: $pm-orange; font-size: .65rem; font-weight: 700; letter-spacing: .08em; }
+
+/* ---------- Illustrations ---------- */
+.pm-pet { width: 100%; height: 100%; }
+.pm-scene { position: relative; width: 100%; aspect-ratio: 1.5; max-width: 22rem; margin: auto;
+    &__disc { position: absolute; inset: 4% 22% 8% 4%; border-radius: 50%; background: #dfe8fa; }
+    .pm-pet { position: absolute; width: 40%; height: auto; &:nth-of-type(1) { left: 10%; top: 6%; } &:nth-of-type(2) { right: 10%; top: 18%; width: 36%; } }
+    &__box { position: absolute; border-radius: 6px; width: 17%; height: 17%;
+        &--orange { background: $pm-orange; left: 16%; bottom: 3%; } &--blue { background: $pm-blue; right: 16%; bottom: 6%; } }
+}
+
+/* ---------- Hero ---------- */
+.pm-hero { border-radius: 24px; background: linear-gradient(120deg, #eaf0fc, #f8faff); overflow: hidden; position: relative; }
+.pm-hero__slide { display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 20rem; padding: 2rem 3rem; gap: 2rem; }
+.pm-hero__copy { h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); font-weight: 700; margin: .5rem 0 .8rem; color: $pm-ink; }
+    p { color: $pm-muted; max-width: 26rem; margin-bottom: 1.4rem; } }
+.pm-hero__dots { margin-bottom: .8rem; button { width: .5rem !important; height: .5rem !important; border: 0 !important; border-radius: 999px; background: #b7c5e6 !important; background-clip: border-box !important; opacity: 1; margin: 0 .25rem; &.active { width: 1.6rem !important; background: $pm-blue !important; } } }
+
+/* ---------- Info cards ---------- */
+.pm-info { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;
+    &::before, &::after { display: none !important; content: none !important; }
+    &__card { display: flex; gap: .9rem; align-items: center; border: 1px solid $pm-line; border-radius: 14px; padding: 1rem 1.2rem; background: #fff;
+        b { display: block; font-size: .85rem; } small, a { font-size: .75rem; color: $pm-muted; text-decoration: none; }
+        a { color: $pm-blue; font-weight: 600; }
+        &--tint { background: $pm-tint; border-color: transparent; } }
+    &__icon { width: 2.4rem; height: 2.4rem; border-radius: 50%; background: $pm-tint; display: grid; place-items: center; color: $pm-blue; flex: none; }
+    &__card--tint &__icon { background: #fff; }
+}
+
+/* ---------- Bubbles / pets / categories ---------- */
+.pm-bubble { display: grid; place-items: center; width: 5.5rem; height: 5.5rem; border-radius: 50%; padding: 1.2rem; transition: transform .15s;
+    &--blue { background: #e4ecfb; } &--peach { background: #fdeee6; color: $pm-orange; } &--mint { background: #e5f5ea; } &--sand { background: #fdf2e0; }
+    &--sm { width: 3.6rem; height: 3.6rem; padding: 0; color: $pm-blue; .pm-icon { width: 1.5rem; height: 1.5rem; } } }
+.pm-pets, .pm-cats { display: grid; gap: 1rem; justify-items: center; }
+.pm-pets { grid-template-columns: repeat(6, 1fr); }
+.pm-cats { grid-template-columns: repeat(6, 1fr); }
+.pm-pet-link, .pm-cat-link { display: flex; flex-direction: column; align-items: center; gap: .6rem; color: $pm-ink; text-decoration: none; font-size: .8rem; font-weight: 500;
+    &:hover .pm-bubble { transform: translateY(-3px); } }
+
+/* ---------- Banners ---------- */
+.pm-banner { display: grid; grid-template-columns: 1fr 1.3fr; align-items: center; background: linear-gradient(120deg, #eaf0fc, #f6f8ff); border-radius: 22px; padding: 2rem 3rem; gap: 2rem; min-height: 14rem;
+    &__copy h2 { font-size: 1.55rem; font-weight: 700; margin-bottom: .6rem; } &__copy p { color: $pm-muted; max-width: 28rem; margin-bottom: 1.2rem; } }
+
+/* ---------- Features ---------- */
+.pm-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.pm-feature { background: $pm-tint; border-radius: 14px; padding: 1.2rem; b { display: block; font-size: .9rem; margin: .8rem 0 .3rem; } p { margin: 0; font-size: .76rem; color: $pm-muted; }
+    &__icon { width: 2.2rem; height: 2.2rem; background: #fff; border-radius: 10px; display: grid; place-items: center; color: $pm-blue; } }
+
+/* ---------- Products ---------- */
+.pm-products { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+.pm-card { border: 1px solid $pm-line; border-radius: 14px; padding: .8rem; display: flex; flex-direction: column; gap: .3rem; background: #fff;
+    &__img { position: relative; background: $pm-tint; border-radius: 10px; aspect-ratio: 1; display: grid; place-items: center; color: $pm-blue; margin-bottom: .5rem; overflow: hidden;
+        img { width: 100%; height: 100%; object-fit: contain; } .pm-icon { width: 2rem; height: 2rem; } }
+    &__brand { color: $pm-blue; font-weight: 700; font-size: .62rem; text-transform: uppercase; letter-spacing: .04em; }
+    &__name { color: $pm-ink; font-size: .82rem; font-weight: 600; text-decoration: none; min-height: 3em; }
+    &__price { b { font-size: 1rem; } s { color: #9aa6bf; font-size: .72rem; margin-left: .4rem; } }
+    .pm-add { margin-top: auto; } }
+.pm-ribbon { position: absolute; top: .5rem; left: .5rem; background: #e5484d; color: #fff; font-size: .62rem; font-weight: 700; border-radius: 6px; padding: .15rem .45rem; }
+.pm-locked { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; background: $pm-tint; border-radius: 16px; padding: 1.6rem 2rem;
+    &__icon { width: 3rem; height: 3rem; border-radius: 50%; background: #fff; color: $pm-blue; display: grid; place-items: center; }
+    p { margin: 0; color: $pm-muted; font-size: .85rem; } div { flex: 1; min-width: 14rem; } }
+
+/* ---------- Stock status + tags (never show quantities) ---------- */
+.pm-badges { display: flex; gap: .35rem; flex-wrap: wrap; align-items: center; }
+.pm-stock, .pm-tag { font-size: .62rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; border-radius: 999px; padding: .15rem .55rem;
+    &--ok { color: $pm-green; background: #e5f6ec; } &--low { color: #a86400; background: #fff1d6; } &--out { color: #c2262c; background: #fde6e7; }
+    &--new { color: #fff; background: $pm-blue; } &--back { color: #fff; background: #7a3fd0; } }
+
+/* ---------- CTA ---------- */
+.pm-cta { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; background: linear-gradient(120deg, $pm-navy, $pm-blue-dark 60%, #163a8f); color: #fff; border-radius: 22px; padding: 2.4rem 3rem; gap: 2rem;
+    h2 { font-size: 1.5rem; font-weight: 700; } p { color: #c9d5f2; max-width: 26rem; margin-bottom: 1.2rem; }
+    .pm-scene__disc { background: rgba(255, 255, 255, .1); } .pm-scene__box { display: none; } }
+
+/* ---------- Footer ---------- */
+#wrapwrap footer .o_footer_copyright { display: none; }
+.pm-footer { background: $pm-blue-dark; color: #d3def6; font-size: .8rem; padding-bottom: 1rem; margin-top: 0;
+    a { color: #d3def6; text-decoration: none; &:hover { color: #fff; } }
+    &__bar { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 0; border-bottom: 1px solid rgba(255, 255, 255, .1); color: #fff; font-weight: 600;
+        &-right { display: flex; gap: 1.6rem; align-items: center; } }
+    .pm-backtop { background: #fff; color: $pm-blue-dark; border-radius: 999px; padding: .4rem .9rem; font-weight: 600; }
+    &__grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 2rem; padding: 2rem 0; h6 { color: #fff; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .9rem; opacity: .8; } ul { list-style: none; padding: 0; margin: 0; li { margin-bottom: .55rem; } } }
+    &__tag { margin-top: .8rem; opacity: .8; }
+    &__legal { display: flex; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, .1); padding-top: 1rem; font-size: .72rem; opacity: .8; flex-wrap: wrap; gap: .5rem; }
+}
+
+/* Footer colours. Odoo's own link colour (a dull brown-orange) beats the rules above,
+   so these use #wrapwrap + !important. White for reading, icy sky-blue as the accent that
+   stands out on navy. */
+$pm-sky: #8fd0ff;
+#wrapwrap .pm-footer {
+    color: #eaf1ff;
+    a, a:visited { color: #eaf1ff !important; font-weight: 500; text-decoration: none !important; transition: color .12s; }
+    a:hover, a:focus { color: $pm-sky !important; text-decoration: underline !important; text-underline-offset: 3px; }
+    .pm-logo, .pm-logo:hover { color: #fff !important; text-decoration: none !important; }
+    .pm-logo__text strong { color: #fff; }
+    .pm-logo__text small { color: $pm-sky; opacity: 1; }
+    .pm-footer__grid h6 { color: $pm-sky; opacity: 1; font-weight: 700; letter-spacing: .14em; }
+    .pm-footer__tag { color: #fff; opacity: 1; font-weight: 500; }
+    .pm-footer__bar { border-bottom-color: rgba(143, 208, 255, .25); }
+    .pm-footer__bar-right b { color: #fff; }
+    .pm-footer__bar-right a:not(.pm-backtop) { color: $pm-sky !important; font-weight: 700; }
+    .pm-footer__bar-right a:not(.pm-backtop):hover { color: #fff !important; }
+    a.pm-backtop { background: #fff; color: $pm-blue-dark !important; font-weight: 700; text-decoration: none !important; }
+    a.pm-backtop:hover { background: $pm-sky; color: $pm-navy !important; text-decoration: none !important; }
+    .pm-footer__legal { color: #c6d6f2; opacity: 1; border-top-color: rgba(143, 208, 255, .25); }
+    .pm-footer__legal a { color: #c6d6f2 !important; font-weight: 400; }
+    .pm-footer__legal a:hover { color: $pm-sky !important; }
+}
+
+/* ---------- Status page ---------- */
+.pm-status__card { max-width: 40rem; background: $pm-tint; border-radius: 22px; padding: 3rem 2rem; h1 { font-size: 1.6rem; font-weight: 700; } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+    .pm-header__row { flex-wrap: wrap; gap: .8rem; }
+    .pm-search { order: 3; flex-basis: 100%; max-width: none; }
+    .pm-hero__slide, .pm-banner, .pm-cta { grid-template-columns: 1fr; padding: 1.5rem; }
+    .pm-hero__art, .pm-banner__art, .pm-cta__art { display: none; }
+    .pm-info, .pm-features { grid-template-columns: 1fr 1fr; }
+    .pm-pets, .pm-cats { grid-template-columns: repeat(3, 1fr); }
+    .pm-products { grid-template-columns: repeat(2, 1fr); }
+    .pm-footer__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 575px) {
+    .pm-info, .pm-features { grid-template-columns: 1fr; }
+    .pm-footer__bar { flex-direction: column; align-items: flex-start; gap: .6rem; }
+}
+
+/* signed-out product cards: lock note in place of the price */
+.pm-card__lock { display: inline-flex; align-items: center; gap: .35rem; color: $pm-muted; font-size: .78rem; font-weight: 500; text-decoration: none;
+    .pm-icon { width: .95rem; height: .95rem; color: $pm-blue; } &:hover { color: $pm-blue; } }
+.pm-card .pm-btn.pm-btn--block { text-align: center; }

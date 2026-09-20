@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Sample / demo data: NEVER deploy (fake products, stock and pictures)
+petmart_catalog/
+
+# Local notes, backups, logs, secrets, editor files
+CLAUDE.md
+backups/
+*.dump
+*.log
+.env
+.env.*
+.claude/
+.vscode/
+.idea/
+Thumbs.db

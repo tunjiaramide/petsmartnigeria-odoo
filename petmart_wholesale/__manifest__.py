@@ -1,0 +1,27 @@
+{
+    'name': 'PETSMART Wholesale (B2B)',
+    'summary': 'Approval-gated wholesale shop: login-only prices, minimum order, stock status badges',
+    'version': '19.0.1.0.0',
+    'category': 'Website/Website',
+    'author': 'PETSMART Nigeria',
+    'license': 'LGPL-3',
+    'depends': [
+        'website_sale',
+        'website_sale_stock',
+        'website_sale_loyalty',
+        'website_sale_wishlist',
+        'product_expiry',
+        'auth_signup',
+        'payment_flutterwave',
+    ],
+    'data': [
+        'data/data.xml',
+        'data/currency.xml',
+        'views/res_partner_views.xml',
+        'views/product_views.xml',
+        'views/templates.xml',
+    ],
+    'post_init_hook': 'post_init_hook',
+    'installable': True,
+    'application': False,
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Top level: who are you shopping for -->
+    <record id="cat_dog" model="product.public.category"><field name="name">Dog</field><field name="sequence">1</field></record>
+    <record id="cat_cat" model="product.public.category"><field name="name">Cat</field><field name="sequence">2</field></record>
+    <record id="cat_bird" model="product.public.category"><field name="name">Bird</field><field name="sequence">3</field></record>
+    <record id="cat_fish" model="product.public.category"><field name="name">Fish</field><field name="sequence">4</field></record>
+    <record id="cat_small_pet" model="product.public.category"><field name="name">Small Pet</field><field name="sequence">5</field></record>
+    <record id="cat_reptile" model="product.public.category"><field name="name">Reptiles</field><field name="sequence">6</field></record>
+
+    <!-- Product types -->
+    <record id="cat_dog_food" model="product.public.category"><field name="name">Dog Food</field><field name="parent_id" ref="cat_dog"/><field name="sequence">1</field></record>
+    <record id="cat_dog_treats" model="product.public.category"><field name="name">Dog Treats</field><field name="parent_id" ref="cat_dog"/><field name="sequence">2</field></record>
+    <record id="cat_cat_food" model="product.public.category"><field name="name">Cat Food</field><field name="parent_id" ref="cat_cat"/><field name="sequence">1</field></record>
+    <record id="cat_cat_litter" model="product.public.category"><field name="name">Cat Litter</field><field name="parent_id" ref="cat_cat"/><field name="sequence">2</field></record>
+    <record id="cat_grooming" model="product.public.category"><field name="name">Grooming</field><field name="sequence">7</field></record>
+    <record id="cat_pharmacy" model="product.public.category"><field name="name">Pharmacy</field><field name="sequence">8</field></record>
+
+</odoo>

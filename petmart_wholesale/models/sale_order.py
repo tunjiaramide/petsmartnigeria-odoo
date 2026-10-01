@@ -14,7 +14,9 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         # hard server-side enforcement, on top of the cart/checkout redirect
-        for order in self.filtered('website_id'):
+        # (skipped while Odoo loads its own demo data, which confirms tiny sample orders)
+        enforce = not self.env.context.get('install_demo')
+        for order in self.filtered('website_id') if enforce else ():
             minimum = order._petmart_min_order_amount()
             if minimum and order.amount_untaxed < minimum:
                 raise UserError(_(

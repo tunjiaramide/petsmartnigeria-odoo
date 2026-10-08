@@ -1,7 +1,7 @@
 {
     'name': 'PETSMART Nigeria Theme',
     'summary': 'Homepage, header, footer and shop styling for the PETSMART wholesale site',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Website/Theme',
     'author': 'PETSMART Nigeria',
     'license': 'LGPL-3',
@@ -10,6 +10,7 @@
         'data/categories.xml',
         'views/layout.xml',
         'views/homepage.xml',
+        'views/shop.xml',
     ],
     'assets': {
         'web.assets_frontend': [

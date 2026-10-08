@@ -11,39 +11,12 @@
                 <section class="container pm-section">
                     <div id="pmHero" class="carousel slide pm-hero" data-bs-ride="carousel" data-bs-interval="6000">
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="pm-hero__slide">
-                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
-                                    <div class="pm-hero__copy">
-                                        <span class="pm-eyebrow">PETSMART NIGERIA · EVERYTHING YOUR PET BUSINESS NEEDS</span>
-                                        <h1>Stock Up &amp; Save</h1>
-                                        <p>Quality pet products at competitive prices, sourced for Nigerian homes and pet businesses alike.</p>
-                                        <a href="/shop" class="pm-btn pm-btn--orange">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="pm-hero__slide">
-                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
-                                    <div class="pm-hero__copy">
-                                        <span class="pm-eyebrow">WHOLESALE PRICING</span>
-                                        <h1>Better margins for your shelves</h1>
-                                        <p>Open a business account and unlock wholesale prices on food, treats, litter and grooming.</p>
-                                        <a href="/web/signup" class="pm-btn pm-btn--orange">Open an Account</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="pm-hero__slide">
-                                    <div class="pm-hero__art"><t t-call="petmart_theme.pet_scene"/></div>
-                                    <div class="pm-hero__copy">
-                                        <span class="pm-eyebrow">NEW ARRIVALS</span>
-                                        <h1>Fresh stock, just landed</h1>
-                                        <p>Be the first to stock the newest food and accessories from top brands.</p>
-                                        <a href="/shop?order=create_date+desc" class="pm-btn pm-btn--orange">See What's New</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Banner images: replace hero-1.jpg … hero-3.jpg in static/src/img/banners (1170 x 430 px, or larger in the same proportion) -->
+                            <t t-foreach="[1, 2, 3]" t-as="pm_banner">
+                                <a t-attf-class="carousel-item pm-hero__banner#{' active' if pm_banner_first else ''}" href="/shop">
+                                    <img class="pm-hero__img" t-attf-src="/petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg" t-attf-alt="PETSMART Nigeria promotion #{pm_banner}" t-att-loading="None if pm_banner_first else 'lazy'"/>
+                                </a>
+                            </t>
                         </div>
                         <div class="carousel-indicators pm-hero__dots">
                             <button type="button" data-bs-target="#pmHero" data-bs-slide-to="0" class="active" aria-label="Slide 1"/>
@@ -53,94 +26,42 @@
                     </div>
                 </section>
 
-                <!-- Info cards -->
-                <section class="container pm-section pm-info">
-                    <div class="pm-info__card">
-                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="user"/></span>
-                        <div>
+                <!-- Welcome bar: greeting + sign-in on the left, two info cards on the right -->
+                <section class="container pm-section">
+                    <div class="pm-info">
+                        <div class="pm-info__hello">
                             <b t-if="pm_state == 'public'">Welcome to PETSMART</b>
                             <b t-else="">Welcome back, <t t-out="request.env.user.name"/></b>
-                            <a t-if="pm_state == 'public'" href="/web/login">Sign in →</a>
-                            <a t-elif="pm_state == 'approved'" href="/my">My account →</a>
-                            <a t-else="" href="/wholesale/pending">Application status →</a>
+                            <a t-if="pm_state == 'public'" href="/web/login" class="pm-btn pm-btn--blue">Sign in</a>
+                            <a t-elif="pm_state == 'approved'" href="/my" class="pm-btn pm-btn--blue">My account</a>
+                            <a t-else="" href="/wholesale/pending" class="pm-btn pm-btn--blue">Application status</a>
                         </div>
-                    </div>
-                    <div class="pm-info__card pm-info__card--tint">
-                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="clipboard"/></span>
-                        <div>
-                            <b>Wholesale pricing for approved businesses</b>
-                            <a href="/web/signup">Open a wholesale account →</a>
+                        <div class="pm-info__card">
+                            <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="clipboard"/></span>
+                            <div class="pm-info__text">
+                                <b>Wholesale pricing for approved businesses</b>
+                                <a href="/web/signup">Open a wholesale account</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="pm-info__card pm-info__card--tint">
-                        <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span>
-                        <div>
-                            <b>Easy nationwide delivery</b>
-                            <small>To every state, right to your door</small>
+                        <div class="pm-info__card">
+                            <span class="pm-info__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span>
+                            <div class="pm-info__text">
+                                <b>Easy nationwide delivery</b>
+                                <small>To every state, right to your door</small>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Who are you shopping for -->
+                <!-- Who are you shopping for: round photo tiles. Photos live in static/src/img/pets (square, 480px) -->
                 <section class="container pm-section">
-                    <h2 class="pm-h2">Who are you shopping for today?</h2>
+                    <h2 class="pm-h2 text-center">Who are you shopping for today?</h2>
                     <div class="pm-pets">
-                        <a t-foreach="[('cat_dog','dog','Dog','blue'),('cat_cat','cat','Cat','peach'),('cat_bird','bird','Bird','mint'),('cat_fish','fish','Fish','blue'),('cat_small_pet','small','Small Pet','sand'),('cat_reptile','reptile','Reptiles','mint')]"
-                           t-as="p" t-attf-class="pm-pet-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + p[0]).sudo())">
-                            <span t-attf-class="pm-bubble pm-bubble--#{p[3]}"><t t-call="petmart_theme.pet_face"><t t-set="pet" t-value="p[1]"/></t></span>
+                        <a t-foreach="[('cat_dog','dog','Dog'),('cat_cat','cat','Cat'),('cat_bird','bird','Bird'),('cat_fish','fish','Fish'),('cat_small_pet','small-pet','Small Pet'),('cat_reptile','reptile','Reptiles')]"
+                           t-as="p" class="pm-pet-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + p[0]).sudo())">
+                            <span class="pm-round-photo"><img t-attf-src="/petmart_theme/static/src/img/pets/#{p[1]}.jpg" t-att-alt="p[2]" loading="lazy"/></span>
                             <span t-out="p[2]"/>
                         </a>
-                    </div>
-                </section>
-
-                <!-- Wholesale banner -->
-                <section class="container pm-section">
-                    <div class="pm-banner">
-                        <div class="pm-banner__art"><t t-call="petmart_theme.pet_scene"/></div>
-                        <div class="pm-banner__copy">
-                            <h2>Wholesale prices. Better margins.</h2>
-                            <p>Get competitive pricing when you stock up for your business — from single stores to multi-location retailers.</p>
-                            <a href="/shop" class="pm-btn pm-btn--blue">Shop Wholesale</a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Popular categories -->
-                <section class="container pm-section">
-                    <h2 class="pm-h2">Explore popular categories</h2>
-                    <div class="pm-cats">
-                        <a t-foreach="[('cat_dog_food','bag','Dog Food'),('cat_dog_treats','bone','Dog Treats'),('cat_cat_food','can','Cat Food'),('cat_cat_litter','litter','Cat Litter'),('cat_grooming','scissors','Grooming')]"
-                           t-as="c" class="pm-cat-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + c[0]).sudo())">
-                            <span class="pm-bubble pm-bubble--blue pm-bubble--sm"><t t-call="petmart_theme.icon" name.f="bag" t-if="c[1] == 'bag'"/><t t-call="petmart_theme.icon" name.f="bone" t-elif="c[1] == 'bone'"/><t t-call="petmart_theme.icon" name.f="can" t-elif="c[1] == 'can'"/><t t-call="petmart_theme.icon" name.f="litter" t-elif="c[1] == 'litter'"/><t t-call="petmart_theme.icon" name.f="scissors" t-else=""/></span>
-                            <span t-out="c[2]"/>
-                        </a>
-                        <a class="pm-cat-link" href="/shop?order=create_date+desc">
-                            <span class="pm-bubble pm-bubble--peach pm-bubble--sm"><t t-call="petmart_theme.icon" name.f="percent"/></span>
-                            <span>Deals</span>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- Everything banner -->
-                <section class="container pm-section">
-                    <div class="pm-banner">
-                        <div class="pm-banner__art"><t t-call="petmart_theme.pet_scene"/></div>
-                        <div class="pm-banner__copy">
-                            <h2>Everything your pet business needs.</h2>
-                            <p>Shop food, treats, litter, grooming supplies, accessories and more all in one place, built for Nigerian pet businesses.</p>
-                            <a href="/shop" class="pm-btn pm-btn--orange">Shop All Products</a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Pet business made easy -->
-                <section class="container pm-section">
-                    <h2 class="pm-h2">Pet business made easy</h2>
-                    <div class="pm-features">
-                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="cart"/></span><b>Easy Online Ordering</b><p>Reorder in a few taps, save your favorite lists.</p></div>
-                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span><b>Reliable Nationwide Delivery</b><p>Fast, tracked delivery to every state in Nigeria.</p></div>
-                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="headset"/></span><b>Business Support</b><p>Dedicated account help for wholesale partners.</p></div>
-                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="refresh"/></span><b>Easy Reordering</b><p>Set up autoship so your shelves never run dry.</p></div>
                     </div>
                 </section>
 
@@ -200,6 +121,42 @@
                     </div>
                 </section>
 
+                <!-- Popular categories: one tall card + five smaller ones. Photos live in static/src/img/categories -->
+                <section class="container pm-section">
+                    <h2 class="pm-h2">Explore popular categories</h2>
+                    <div class="pm-catgrid">
+                        <a t-foreach="[('cat_dog_food','dog-food','Dog Food'),('cat_pharmacy','pharmacy','Pharmacy'),('cat_dog_treats','dog-treats','Dog Treats'),('cat_cat_food','cat-food','Cat Food'),('cat_cat_litter','cat-litter','Cat Litter'),('cat_grooming','grooming','Grooming')]"
+                           t-as="c" t-attf-class="pm-catcard pm-catcard--#{c_index + 1}" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + c[0]).sudo())">
+                            <span class="pm-catcard__img"><img t-attf-src="/petmart_theme/static/src/img/categories/#{c[1]}.jpg" t-att-alt="c[2]" loading="lazy"/></span>
+                            <span class="pm-catcard__label" t-out="c[2]"/>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Wholesale banner -->
+                <section class="container pm-section">
+                    <div class="pm-banner pm-banner--product">
+                        <!-- Product cut-out (transparent PNG): static/src/img/banners/wholesale-product.png -->
+                        <div class="pm-banner__art"><img src="/petmart_theme/static/src/img/banners/wholesale-product.png" alt="Wholesale pet food" loading="lazy"/></div>
+                        <div class="pm-banner__copy">
+                            <h2>Wholesale prices. Better margins.</h2>
+                            <p>Get competitive pricing when you stock up for your business — from single stores to multi-location retailers.</p>
+                            <a href="/shop" class="pm-btn pm-btn--blue">Shop Wholesale</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pet business made easy -->
+                <section class="container pm-section">
+                    <h2 class="pm-h2">Pet business made easy</h2>
+                    <div class="pm-features">
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="cart"/></span><b>Easy Online Ordering</b><p>Reorder in a few taps, save your favorite lists.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="truck"/></span><b>Reliable Nationwide Delivery</b><p>Fast, tracked delivery to every state in Nigeria.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="headset"/></span><b>Business Support</b><p>Dedicated account help for wholesale partners.</p></div>
+                        <div class="pm-feature"><span class="pm-feature__icon"><t t-call="petmart_theme.icon" name.f="refresh"/></span><b>Easy Reordering</b><p>Set up autoship so your shelves never run dry.</p></div>
+                    </div>
+                </section>
+
                 <!-- CTA band -->
                 <section class="container pm-section">
                     <div class="pm-cta">
@@ -208,7 +165,8 @@
                             <p>Reliable pet-product supply for growing businesses, delivered on your schedule.</p>
                             <a href="/shop" class="pm-btn pm-btn--orange">Shop Now</a>
                         </div>
-                        <div class="pm-cta__art"><t t-call="petmart_theme.pet_scene"/></div>
+                        <!-- Round photo: static/src/img/banners/cta-pets.jpg (square, 640px) -->
+                        <div class="pm-cta__art"><img class="pm-cta__photo" src="/petmart_theme/static/src/img/banners/cta-pets.jpg" alt="Two happy dogs" loading="lazy"/></div>
                     </div>
                 </section>
             </div>

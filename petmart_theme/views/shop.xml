@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Shop tile: brand line above the availability badges (same order as the homepage cards) -->
+    <template id="products_item_brand" inherit_id="website_sale.products_item" name="PETSMART shop tile brand" priority="20">
+        <xpath expr="//h2[hasclass('o_wsale_products_item_title')]" position="before">
+            <small t-if="product.petmart_brand" class="pm-card__brand d-block" t-out="product.petmart_brand"/>
+        </xpath>
+    </template>
+
+    <!-- Product page: brand above the name, availability badges under it. Never prints a quantity. -->
+    <template id="product_title_petmart" inherit_id="website_sale.product_title" name="PETSMART product title" priority="20">
+        <xpath expr="//h1" position="before">
+            <small t-if="product.petmart_brand" class="pm-card__brand pm-product__brand d-block" t-out="product.petmart_brand"/>
+        </xpath>
+        <xpath expr="//h1" position="after">
+            <div class="pm-badges pm-product__badges">
+                <t t-call="petmart_wholesale.stock_badge">
+                    <t t-set="product" t-value="product"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

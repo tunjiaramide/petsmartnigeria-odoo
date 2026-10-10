@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Odoo hides shop categories without published products from customers (their page is a 404).
+         The mega menu lists the whole category tree, so every category must open, even when it is
+         still empty. Re-activate the rule in Settings > Technical > Record Rules to hide them again. -->
+    <function model="ir.rule" name="write">
+        <value eval="[ref('website_sale.empty_public_categories_rule')]"/>
+        <value eval="{'active': False}"/>
+    </function>
+
+</odoo>

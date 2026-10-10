@@ -58,7 +58,7 @@
                     <h2 class="pm-h2 text-center">Who are you shopping for today?</h2>
                     <div class="pm-pets">
                         <a t-foreach="[('cat_dog','dog','Dog'),('cat_cat','cat','Cat'),('cat_bird','bird','Bird'),('cat_fish','fish','Fish'),('cat_small_pet','small-pet','Small Pet'),('cat_reptile','reptile','Reptiles')]"
-                           t-as="p" class="pm-pet-link" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + p[0]).sudo())">
+                           t-as="p" class="pm-pet-link" t-att-href="website._petmart_category_url(p[0])">
                             <span class="pm-round-photo"><img t-attf-src="/petmart_theme/static/src/img/pets/#{p[1]}.jpg" t-att-alt="p[2]" loading="lazy"/></span>
                             <span t-out="p[2]"/>
                         </a>
@@ -126,7 +126,7 @@
                     <h2 class="pm-h2">Explore popular categories</h2>
                     <div class="pm-catgrid">
                         <a t-foreach="[('cat_dog_food','dog-food','Dog Food'),('cat_pharmacy','pharmacy','Pharmacy'),('cat_dog_treats','dog-treats','Dog Treats'),('cat_cat_food','cat-food','Cat Food'),('cat_cat_litter','cat-litter','Cat Litter'),('cat_grooming','grooming','Grooming')]"
-                           t-as="c" t-attf-class="pm-catcard pm-catcard--#{c_index + 1}" t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.' + c[0]).sudo())">
+                           t-as="c" t-attf-class="pm-catcard pm-catcard--#{c_index + 1}" t-att-href="website._petmart_category_url(c[0])">
                             <span class="pm-catcard__img"><img t-attf-src="/petmart_theme/static/src/img/categories/#{c[1]}.jpg" t-att-alt="c[2]" loading="lazy"/></span>
                             <span class="pm-catcard__label" t-out="c[2]"/>
                         </a>

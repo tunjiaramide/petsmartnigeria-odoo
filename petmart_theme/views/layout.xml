@@ -112,15 +112,36 @@
                 </div>
                 <div class="pm-header__nav">
                     <div class="container pm-header__row">
+                        <!-- Mega menu: animal > group > sub-category, read from the shop category tree -->
                         <ul class="pm-nav">
-                            <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_dog').sudo())">Dog</a></li>
-                            <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_cat').sudo())">Cat</a></li>
-                            <li><a href="/shop">Other Animals</a></li>
-                            <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_pharmacy').sudo())">Pharmacy</a></li>
-                            <li><a href="/contactus">Services</a></li>
-                            <li><a href="/shop">Brands</a></li>
-                            <li><a href="/shop?order=create_date+desc">New Arrivals</a></li>
-                            <li><a href="/shop?order=create_date+desc" class="pm-nav__deals">Deals</a></li>
+                            <t t-foreach="website._petmart_nav_categories()" t-as="pm_cat">
+                                <t t-set="pm_cat_url" t-value="'/shop/category/%s' % slug(pm_cat)"/>
+                                <li t-attf-class="pm-nav__item#{' pm-nav__item--mega' if pm_cat.child_id else ''}">
+                                    <a class="pm-nav__link" t-att-href="pm_cat_url" t-att-aria-haspopup="'true' if pm_cat.child_id else None">
+                                        <t t-out="pm_cat.name"/>
+                                        <svg t-if="pm_cat.child_id" class="pm-nav__chev" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg>
+                                    </a>
+                                    <div t-if="pm_cat.child_id" class="pm-mega">
+                                        <div class="container">
+                                            <div class="pm-mega__grid">
+                                                <t t-foreach="pm_cat.child_id" t-as="pm_group">
+                                                    <t t-set="pm_n" t-value="len(pm_group.child_id)"/>
+                                                    <div t-attf-class="pm-mega__group#{' pm-mega__group--x3' if pm_n &gt; 16 else ' pm-mega__group--x2' if pm_n &gt; 9 else ''}">
+                                                        <a class="pm-mega__title" t-attf-href="/shop/category/#{slug(pm_group)}"><t t-out="pm_group.name"/><span aria-hidden="true">›</span></a>
+                                                        <ul t-if="pm_group.child_id" class="pm-mega__list">
+                                                            <li t-foreach="pm_group.child_id" t-as="pm_sub"><a t-attf-href="/shop/category/#{slug(pm_sub)}" t-out="pm_sub.name"/></li>
+                                                        </ul>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <a class="pm-mega__all" t-att-href="pm_cat_url">Shop all <t t-out="pm_cat.name"/><span aria-hidden="true">›</span></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </t>
+                            <li class="pm-nav__item"><a class="pm-nav__link" href="/shop">Brands</a></li>
+                            <li class="pm-nav__item"><a class="pm-nav__link" href="/shop?order=create_date+desc">New Arrivals</a></li>
+                            <li class="pm-nav__item"><a class="pm-nav__link pm-nav__deals" href="/shop?order=create_date+desc">Deals</a></li>
                         </ul>
                         <a href="/wholesale/pending" class="pm-pill"><t t-call="petmart_theme.icon" name.f="paw"/> Wholesale</a>
                     </div>
@@ -157,12 +178,12 @@
                         <div>
                             <h6>Shop</h6>
                             <ul>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_dog').sudo())">Dog</a></li>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_cat').sudo())">Cat</a></li>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_bird').sudo())">Bird</a></li>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_fish').sudo())">Fish</a></li>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_small_pet').sudo())">Small Animals</a></li>
-                                <li><a t-att-href="'/shop/category/%s' % slug(request.env.ref('petmart_theme.cat_grooming').sudo())">Grooming</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_dog')">Dog</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_cat')">Cat</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_bird')">Bird</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_fish')">Fish</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_small_pet')">Small Animals</a></li>
+                                <li><a t-att-href="website._petmart_category_url('cat_grooming')">Grooming</a></li>
                             </ul>
                         </div>
                         <div>

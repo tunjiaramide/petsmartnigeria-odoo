@@ -9,21 +9,21 @@
             <xpath expr="//sheet" position="before">
                 <header invisible="wholesale_state == 'none' and not is_company">
                     <button name="action_wholesale_approve" string="Approve wholesale" type="object"
-                            class="btn-primary" groups="sales_team.group_sale_manager"
+                            class="btn-primary" groups="petmart_wholesale.group_petmart_editor"
                             invisible="wholesale_state in ('approved', 'none')"/>
                     <button name="action_wholesale_reject" string="Reject" type="object"
-                            groups="sales_team.group_sale_manager"
+                            groups="petmart_wholesale.group_petmart_editor"
                             invisible="wholesale_state in ('rejected', 'none')"/>
                     <button name="action_wholesale_reset" string="Back to pending" type="object"
-                            groups="sales_team.group_sale_manager"
+                            groups="petmart_wholesale.group_petmart_editor"
                             invisible="wholesale_state in ('pending', 'none')"/>
                     <field name="wholesale_state" widget="statusbar"
                            statusbar_visible="pending,approved"/>
                 </header>
             </xpath>
             <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="after">
-                <field name="wholesale_approved_by" groups="sales_team.group_sale_manager"/>
-                <field name="wholesale_approved_on" groups="sales_team.group_sale_manager"/>
+                <field name="wholesale_approved_by" groups="petmart_wholesale.group_petmart_editor"/>
+                <field name="wholesale_approved_on" groups="petmart_wholesale.group_petmart_editor"/>
             </xpath>
         </field>
     </record>

@@ -21,8 +21,8 @@ class ResPartner(models.Model):
     wholesale_approved_on = fields.Datetime(copy=False, readonly=True)
 
     def _check_wholesale_manager(self):
-        if not self.env.user.has_group('sales_team.group_sale_manager'):
-            raise AccessError(_("Only Sales Managers can approve or reject wholesale accounts."))
+        if not self.env.user.has_group('petmart_wholesale.group_petmart_editor'):
+            raise AccessError(_("Only PETSMART Editors and administrators can approve or reject wholesale accounts."))
 
     def action_wholesale_approve(self):
         self._check_wholesale_manager()
@@ -58,4 +58,4 @@ class ResPartner(models.Model):
     @api.model
     def _wholesale_managers(self):
         users = self.env['res.users'].sudo().search([('share', '=', False)])
-        return users.filtered(lambda u: u.has_group('sales_team.group_sale_manager'))
+        return users.filtered(lambda u: u.has_group('petmart_wholesale.group_petmart_editor'))

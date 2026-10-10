@@ -23,6 +23,47 @@
         </xpath>
     </template>
 
+    <!-- Shop tile: visitors who are not approved see a lock note instead of the price -->
+    <template id="products_item_price_lock" inherit_id="website_sale.products_item" name="PETSMART tile price lock">
+        <xpath expr="//div[hasclass('product_price')]" position="attributes">
+            <attribute name="t-if">website._petmart_can_order()</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]" position="after">
+            <a t-else="" class="pm-card__lock" t-att-href="website._petmart_unlock_url()">
+                <i class="fa fa-lock" role="presentation"/>
+                <span t-if="request.env.user._is_public()">Sign in to see price</span>
+                <span t-else="">Available after approval</span>
+            </a>
+        </xpath>
+    </template>
+
+    <!-- Product page: the price and the buy box are hidden by Odoo when the price is locked;
+         this explains why and offers the way in -->
+    <template id="product_price_lock" inherit_id="website_sale.product_price" name="PETSMART product price lock">
+        <xpath expr="//div[@id='product_unavailable']" position="after">
+            <div t-if="combination_info.get('petmart_price_locked')" class="pm-price-lock">
+                <i class="fa fa-lock pm-price-lock__icon" role="presentation"/>
+                <div class="pm-price-lock__text">
+                    <t t-if="request.env.user._is_public()">
+                        <b>Sign in to see the wholesale price</b>
+                        <p>Prices and ordering are available to approved business accounts.</p>
+                    </t>
+                    <t t-else="">
+                        <b>Price available after approval</b>
+                        <p>Your wholesale account has not been approved yet.</p>
+                    </t>
+                </div>
+                <div class="pm-price-lock__actions">
+                    <t t-if="request.env.user._is_public()">
+                        <a class="btn btn-primary" t-attf-href="/web/login?redirect=#{product.website_url}">Sign in</a>
+                        <a class="btn btn-outline-primary" href="/web/signup">Open an account</a>
+                    </t>
+                    <a t-else="" class="btn btn-primary" href="/wholesale/pending">View application status</a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
     <!-- Registration form: business details for the approval screening -->
     <template id="signup_business_fields" inherit_id="auth_signup.signup" name="Wholesale registration fields">
         <xpath expr="//div[hasclass('field-login')]" position="after">

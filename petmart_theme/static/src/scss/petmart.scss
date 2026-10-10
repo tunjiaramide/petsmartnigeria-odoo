@@ -393,3 +393,13 @@ $pm-font: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 .pm-cta__photo { width: 17rem; max-width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; display: block;
     box-shadow: 0 0 0 6px rgba(255, 255, 255, .14), 0 0 0 16px rgba(255, 255, 255, .06), 0 18px 40px rgba(0, 0, 0, .35); }
 .pm-cta { padding-top: 2rem; padding-bottom: 2rem; }
+
+/* ---------- Price lock (visitors and customers who are not approved yet) ---------- */
+#wrapwrap .o_wsale_products_page .pm-card__lock { font-size: .8rem; .fa { color: $pm-blue; } }
+.pm-price-lock { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.1rem; background: $pm-tint; border-radius: 14px; padding: 1.2rem 1.3rem; margin: .4rem 0 1.2rem;
+    &__icon { flex: none; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: #fff; color: $pm-blue; display: grid; place-items: center; font-size: 1.1rem; }
+    &__text { flex: 1 1 12rem; b { display: block; font-size: 1rem; color: $pm-ink; } p { margin: .15rem 0 0; font-size: .82rem; color: $pm-muted; } }
+    &__actions { display: flex; flex-wrap: wrap; gap: .6rem; .btn { padding: .65rem 1.3rem; font-size: .88rem; } }
+}
+/* Odoo shows its generic "Contact us" block when a price is hidden; the lock box above replaces it */
+#wrapwrap .o_wsale_product_page:has(.pm-price-lock) #contact_us_wrapper { display: none !important; }

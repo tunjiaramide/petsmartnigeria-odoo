@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.http import request
 
 STOCK_STATUS = [('available', 'Available'), ('low', 'Low stock'), ('out', 'Out of stock')]
 
@@ -42,6 +43,41 @@ class ProductTemplate(models.Model):
             product.petmart_is_new = bool(product.create_date and product.create_date >= limit)
             until = product.petmart_back_in_stock_until
             product.petmart_is_back_in_stock = bool(until and until >= now)
+
+    # ------------------------------------------------------------------
+    # Prices are only for staff and approved wholesale customers
+    # ------------------------------------------------------------------
+    @api.model
+    def _petmart_price_locked(self):
+        """True on the website for a visitor who may browse but not see prices."""
+        return bool(request) and request.is_frontend and not request.website._petmart_can_order()
+
+    def _get_sales_prices(self, website):
+        # shop listing
+        if self._petmart_price_locked():
+            return {template.id: {'price_reduce': 0.0} for template in self}
+        return super()._get_sales_prices(website)
+
+    def _get_additionnal_combination_info(self, product_or_template, quantity, uom, date, website):
+        """Product page, search suggestions, wishlist and the variant RPC all read
+        their price here. A locked visitor gets no amount at all, and Odoo's own
+        "price hidden, cannot be ordered" switch (prevent_zero_price_sale)."""
+        combination_info = super()._get_additionnal_combination_info(product_or_template, quantity, uom, date, website)
+        if self._petmart_price_locked():
+            for key in ('price', 'list_price', 'price_extra', 'compare_list_price', 'base_unit_price'):
+                if key in combination_info:
+                    combination_info[key] = 0.0
+            combination_info.update({
+                'has_discounted_price': False,
+                'prevent_zero_price_sale': True,
+                'petmart_price_locked': True,
+            })
+        return combination_info
+
+    def _website_show_quick_add(self):
+        if self._petmart_price_locked():
+            return False
+        return super()._website_show_quick_add()
 
     @api.model
     def _cron_petmart_back_in_stock(self):

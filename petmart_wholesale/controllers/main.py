@@ -11,14 +11,14 @@ from odoo.addons.website_sale.controllers.main import WebsiteSale
 SIGN_UP_REQUEST_PARAMS.update({'company_name', 'phone', 'vat', 'street'})
 
 
-def _pending_redirect():
-    """Signed-in customers who are not approved yet are sent to the status page
-    instead of bouncing between the shop and the login form."""
-    website = request.website
-    if website.ecommerce_access != 'logged_in' or website.has_ecommerce_access():
+def _order_redirect():
+    """The catalogue is open to everyone, but the cart and checkout are only for
+    staff and approved customers: visitors go to the login form, signed-in
+    customers who are not approved yet go to their application status page."""
+    if request.website._petmart_can_order():
         return None
     if request.env.user._is_public():
-        return None
+        return request.redirect('/web/login?redirect=/shop/cart')
     return request.redirect('/wholesale/pending')
 
 
@@ -42,16 +42,8 @@ class PetmartSignup(AuthSignupHome):
 
 class PetmartShop(WebsiteSale):
 
-    @http.route()
-    def shop(self, *args, **kwargs):
-        return _pending_redirect() or super().shop(*args, **kwargs)
-
-    @http.route()
-    def product(self, *args, **kwargs):
-        return _pending_redirect() or super().product(*args, **kwargs)
-
     def _check_cart(self, order_sudo):
-        redirection = super()._check_cart(order_sudo)
+        redirection = _order_redirect() or super()._check_cart(order_sudo)
         if redirection:
             return redirection
         if order_sudo and not order_sudo._petmart_min_order_ok():
@@ -67,7 +59,7 @@ class PetmartCart(Cart):
 
     @http.route()
     def cart(self, *args, **kwargs):
-        return _pending_redirect() or super().cart(*args, **kwargs)
+        return _order_redirect() or super().cart(*args, **kwargs)
 
 
 class WholesaleStatus(http.Controller):

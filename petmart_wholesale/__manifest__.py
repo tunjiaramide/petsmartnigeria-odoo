@@ -1,7 +1,7 @@
 {
     'name': 'PETSMART Wholesale (B2B)',
-    'summary': 'Approval-gated wholesale shop: login-only prices, minimum order, stock status badges',
-    'version': '19.0.1.0.0',
+    'summary': 'Wholesale shop: open catalogue, prices and ordering for approved customers, minimum order, stock status badges',
+    'version': '19.0.1.1.0',
     'category': 'Website/Website',
     'author': 'PETSMART Nigeria',
     'license': 'LGPL-3',

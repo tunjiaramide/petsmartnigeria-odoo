@@ -5,7 +5,7 @@
         <xpath expr="//div[@id='wrap']" position="replace">
             <div id="wrap" class="pm-home">
                 <t t-set="pm_state" t-value="website._petmart_wholesale_state()"/>
-                <t t-set="pm_can_shop" t-value="website.has_ecommerce_access()"/>
+                <t t-set="pm_can_shop" t-value="website._petmart_can_order()"/>
 
                 <!-- Hero carousel -->
                 <section class="container pm-section">
@@ -78,13 +78,13 @@
                         <t t-foreach="pm_products" t-as="product">
                             <t t-if="pm_can_shop" t-set="pm_info" t-value="product._get_combination_info(only_template=True)"/>
                             <article class="pm-card">
-                                <a class="pm-card__img" t-att-href="product.website_url if pm_can_shop else pm_login_href">
+                                <a class="pm-card__img" t-att-href="product.website_url">
                                     <span t-if="pm_can_shop and pm_info.get('has_discounted_price')" class="pm-ribbon">Deal</span>
                                     <img t-if="product.image_128" t-att-src="website.image_url(product, 'image_512')" t-att-alt="product.name" loading="lazy"/>
                                     <t t-else=""><t t-call="petmart_theme.icon" name.f="bag"/></t>
                                 </a>
                                 <small class="pm-card__brand" t-out="product.petmart_brand or ''"/>
-                                <a class="pm-card__name" t-att-href="product.website_url if pm_can_shop else pm_login_href" t-out="product.name"/>
+                                <a class="pm-card__name" t-att-href="product.website_url" t-out="product.name"/>
                                 <div class="pm-card__price">
                                     <t t-if="pm_can_shop">
                                         <b t-out="pm_info['price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>

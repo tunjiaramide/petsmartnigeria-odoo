@@ -1,20 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-    <!-- Top level: who are you shopping for -->
-    <record id="cat_dog" model="product.public.category"><field name="name">Dog</field><field name="sequence">1</field></record>
-    <record id="cat_cat" model="product.public.category"><field name="name">Cat</field><field name="sequence">2</field></record>
-    <record id="cat_bird" model="product.public.category"><field name="name">Bird</field><field name="sequence">3</field></record>
-    <record id="cat_fish" model="product.public.category"><field name="name">Fish</field><field name="sequence">4</field></record>
-    <record id="cat_small_pet" model="product.public.category"><field name="name">Small Pet</field><field name="sequence">5</field></record>
-    <record id="cat_reptile" model="product.public.category"><field name="name">Reptiles</field><field name="sequence">6</field></record>
+    <!-- Shop category tree: animal > group > sub-category. The header mega menu is drawn from it.
+         noupdate: created on install, then owned by staff (renames and new sub-categories are kept).
+         Changes to categories that already exist need a migration script (see migrations/). -->
 
-    <!-- Product types -->
-    <record id="cat_dog_food" model="product.public.category"><field name="name">Dog Food</field><field name="parent_id" ref="cat_dog"/><field name="sequence">1</field></record>
-    <record id="cat_dog_treats" model="product.public.category"><field name="name">Dog Treats</field><field name="parent_id" ref="cat_dog"/><field name="sequence">2</field></record>
-    <record id="cat_cat_food" model="product.public.category"><field name="name">Cat Food</field><field name="parent_id" ref="cat_cat"/><field name="sequence">1</field></record>
-    <record id="cat_cat_litter" model="product.public.category"><field name="name">Cat Litter</field><field name="parent_id" ref="cat_cat"/><field name="sequence">2</field></record>
-    <record id="cat_grooming" model="product.public.category"><field name="name">Grooming</field><field name="sequence">7</field></record>
+    <!-- ===== Dog ===== -->
+    <record id="cat_dog" model="product.public.category"><field name="name">Dog</field><field name="sequence">1</field></record>
+    <record id="cat_dog_food" model="product.public.category"><field name="name">Food</field><field name="parent_id" ref="cat_dog"/><field name="sequence">1</field></record>
+    <record id="cat_dog_food_dry_food" model="product.public.category"><field name="name">Dry Food</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">1</field></record>
+    <record id="cat_dog_food_fussy_eaters" model="product.public.category"><field name="name">Fussy Eaters</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">2</field></record>
+    <record id="cat_dog_food_pregnancy" model="product.public.category"><field name="name">Pregnancy</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">3</field></record>
+    <record id="cat_dog_food_puppy_food_dry" model="product.public.category"><field name="name">Puppy Food Dry</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">4</field></record>
+    <record id="cat_dog_food_puppy_food_wet" model="product.public.category"><field name="name">Puppy Food Wet</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">5</field></record>
+    <record id="cat_dog_food_veterinary_diets" model="product.public.category"><field name="name">Veterinary Diets</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">6</field></record>
+    <record id="cat_dog_food_wet_food" model="product.public.category"><field name="name">Wet Food</field><field name="parent_id" ref="cat_dog_food"/><field name="sequence">7</field></record>
+    <record id="cat_dog_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_dog"/><field name="sequence">2</field></record>
+    <record id="cat_dog_supplies_beds" model="product.public.category"><field name="name">Beds</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_dog_supplies_bowls_feeders" model="product.public.category"><field name="name">Bowls &amp; Feeders</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_dog_supplies_carriers_travel" model="product.public.category"><field name="name">Carriers &amp; Travel</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_dog_supplies_cleaning_potty" model="product.public.category"><field name="name">Cleaning &amp; Potty</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_dog_supplies_clothing_accessories" model="product.public.category"><field name="name">Clothing &amp; Accessories</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">5</field></record>
+    <record id="cat_dog_supplies_cologne_sprays_deodorants" model="product.public.category"><field name="name">Cologne Sprays &amp; Deodorants</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">6</field></record>
+    <record id="cat_dog_supplies_crates_pens_gates" model="product.public.category"><field name="name">Crates, Pens &amp; Gates</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">7</field></record>
+    <record id="cat_dog_supplies_dental_care" model="product.public.category"><field name="name">Dental Care</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">8</field></record>
+    <record id="cat_dog_supplies_flea_tick" model="product.public.category"><field name="name">Flea &amp; Tick</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">9</field></record>
+    <record id="cat_dog_supplies_gifts_books" model="product.public.category"><field name="name">Gifts &amp; Books</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">10</field></record>
+    <record id="cat_grooming" model="product.public.category"><field name="name">Grooming</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">11</field></record>
+    <record id="cat_dog_supplies_healthcare" model="product.public.category"><field name="name">Healthcare</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">12</field></record>
+    <record id="cat_dog_supplies_leashes_collars_harnesses" model="product.public.category"><field name="name">Leashes, Collars &amp; Harnesses</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">13</field></record>
+    <record id="cat_dog_supplies_memorials_keepsakes" model="product.public.category"><field name="name">Memorials &amp; Keepsakes</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">14</field></record>
+    <record id="cat_dog_supplies_muzzle" model="product.public.category"><field name="name">Muzzle</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">15</field></record>
+    <record id="cat_dog_supplies_technology" model="product.public.category"><field name="name">Technology</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">16</field></record>
+    <record id="cat_dog_supplies_toys" model="product.public.category"><field name="name">Toys</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">17</field></record>
+    <record id="cat_dog_supplies_training_behaviour" model="product.public.category"><field name="name">Training &amp; Behaviour</field><field name="parent_id" ref="cat_dog_supplies"/><field name="sequence">18</field></record>
+    <record id="cat_dog_treats" model="product.public.category"><field name="name">Treats</field><field name="parent_id" ref="cat_dog"/><field name="sequence">3</field></record>
+    <record id="cat_dog_treats_dog_treats" model="product.public.category"><field name="name">Dog Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">1</field></record>
+    <record id="cat_dog_treats_bones_bully_sticks_natural_chews" model="product.public.category"><field name="name">Bones, Bully Sticks &amp; Natural Chews</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">2</field></record>
+    <record id="cat_dog_treats_dehydrated_treats" model="product.public.category"><field name="name">Dehydrated Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">3</field></record>
+    <record id="cat_dog_treats_dental_treats" model="product.public.category"><field name="name">Dental Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">4</field></record>
+    <record id="cat_dog_treats_freeze_dried_treats" model="product.public.category"><field name="name">Freeze-Dried Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">5</field></record>
+    <record id="cat_dog_treats_jerky_treats" model="product.public.category"><field name="name">Jerky Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">6</field></record>
+    <record id="cat_dog_treats_pill_covers_wraps" model="product.public.category"><field name="name">Pill Covers &amp; Wraps</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">7</field></record>
+    <record id="cat_dog_treats_rawhide_free_treats" model="product.public.category"><field name="name">Rawhide Free Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">8</field></record>
+    <record id="cat_dog_treats_soft_chewy_treats" model="product.public.category"><field name="name">Soft &amp; Chewy Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">9</field></record>
+    <record id="cat_dog_treats_training_treats" model="product.public.category"><field name="name">Training Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">10</field></record>
+    <record id="cat_dog_treats_veterinary_diet_treats" model="product.public.category"><field name="name">Veterinary Diet Treats</field><field name="parent_id" ref="cat_dog_treats"/><field name="sequence">11</field></record>
+
+    <!-- ===== Cat ===== -->
+    <record id="cat_cat" model="product.public.category"><field name="name">Cat</field><field name="sequence">2</field></record>
+    <record id="cat_cat_food" model="product.public.category"><field name="name">Food</field><field name="parent_id" ref="cat_cat"/><field name="sequence">1</field></record>
+    <record id="cat_cat_food_dry_food" model="product.public.category"><field name="name">Dry Food</field><field name="parent_id" ref="cat_cat_food"/><field name="sequence">1</field></record>
+    <record id="cat_cat_food_veterinary_diets" model="product.public.category"><field name="name">Veterinary Diets</field><field name="parent_id" ref="cat_cat_food"/><field name="sequence">2</field></record>
+    <record id="cat_cat_food_wet_food" model="product.public.category"><field name="name">Wet Food</field><field name="parent_id" ref="cat_cat_food"/><field name="sequence">3</field></record>
+    <record id="cat_cat_litter" model="product.public.category"><field name="name">Litters &amp; Accessories</field><field name="parent_id" ref="cat_cat"/><field name="sequence">2</field></record>
+    <record id="cat_cat_litter_cleaners_deodorizers" model="product.public.category"><field name="name">Cleaners &amp; Deodorizers</field><field name="parent_id" ref="cat_cat_litter"/><field name="sequence">1</field></record>
+    <record id="cat_cat_litter_litter" model="product.public.category"><field name="name">Litter</field><field name="parent_id" ref="cat_cat_litter"/><field name="sequence">2</field></record>
+    <record id="cat_cat_litter_litter_box_accessories" model="product.public.category"><field name="name">Litter Box Accessories</field><field name="parent_id" ref="cat_cat_litter"/><field name="sequence">3</field></record>
+    <record id="cat_cat_litter_litter_boxes" model="product.public.category"><field name="name">Litter Boxes</field><field name="parent_id" ref="cat_cat_litter"/><field name="sequence">4</field></record>
+    <record id="cat_cat_litter_waste_disposal" model="product.public.category"><field name="name">Waste Disposal</field><field name="parent_id" ref="cat_cat_litter"/><field name="sequence">5</field></record>
+    <record id="cat_cat_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_cat"/><field name="sequence">3</field></record>
+    <record id="cat_cat_supplies_beds" model="product.public.category"><field name="name">Beds</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_cat_supplies_bowls_feeders" model="product.public.category"><field name="name">Bowls &amp; Feeders</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_cat_supplies_carriers_travel" model="product.public.category"><field name="name">Carriers &amp; Travel</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_cat_supplies_clothing_accessories" model="product.public.category"><field name="name">Clothing &amp; Accessories</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_cat_supplies_crates_pens_gates" model="product.public.category"><field name="name">Crates, Pens &amp; Gates</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">5</field></record>
+    <record id="cat_cat_supplies_dental_care" model="product.public.category"><field name="name">Dental Care</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">6</field></record>
+    <record id="cat_cat_supplies_flea_tick" model="product.public.category"><field name="name">Flea &amp; Tick</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">7</field></record>
+    <record id="cat_cat_supplies_furniture" model="product.public.category"><field name="name">Furniture</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">8</field></record>
+    <record id="cat_cat_supplies_gifts_books" model="product.public.category"><field name="name">Gifts &amp; Books</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">9</field></record>
+    <record id="cat_cat_supplies_grooming" model="product.public.category"><field name="name">Grooming</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">10</field></record>
+    <record id="cat_cat_supplies_healthcare" model="product.public.category"><field name="name">Healthcare</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">11</field></record>
+    <record id="cat_cat_supplies_houses" model="product.public.category"><field name="name">Houses</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">12</field></record>
+    <record id="cat_cat_supplies_leashes_collars" model="product.public.category"><field name="name">Leashes &amp; Collars</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">13</field></record>
+    <record id="cat_cat_supplies_memorials_keepsakes" model="product.public.category"><field name="name">Memorials &amp; Keepsakes</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">14</field></record>
+    <record id="cat_cat_supplies_scratching_posts" model="product.public.category"><field name="name">Scratching Posts</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">15</field></record>
+    <record id="cat_cat_supplies_technology" model="product.public.category"><field name="name">Technology</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">16</field></record>
+    <record id="cat_cat_supplies_toys" model="product.public.category"><field name="name">Toys</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">17</field></record>
+    <record id="cat_cat_supplies_training_cleaning" model="product.public.category"><field name="name">Training &amp; Cleaning</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">18</field></record>
+    <record id="cat_cat_supplies_treats" model="product.public.category"><field name="name">Treats</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">19</field></record>
+    <record id="cat_cat_supplies_trees_condos" model="product.public.category"><field name="name">Trees &amp; Condos</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">20</field></record>
+    <record id="cat_cat_supplies_wall_shelves" model="product.public.category"><field name="name">Wall Shelves</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">21</field></record>
+    <record id="cat_cat_supplies_window_perches" model="product.public.category"><field name="name">Window Perches</field><field name="parent_id" ref="cat_cat_supplies"/><field name="sequence">22</field></record>
+
+    <!-- ===== Bird ===== -->
+    <record id="cat_bird" model="product.public.category"><field name="name">Bird</field><field name="sequence">3</field></record>
+    <record id="cat_bird_food" model="product.public.category"><field name="name">Food</field><field name="parent_id" ref="cat_bird"/><field name="sequence">1</field></record>
+    <record id="cat_bird_food_conure_macaw" model="product.public.category"><field name="name">Conure &amp; Macaw</field><field name="parent_id" ref="cat_bird_food"/><field name="sequence">1</field></record>
+    <record id="cat_bird_food_finch_canary" model="product.public.category"><field name="name">Finch &amp; Canary</field><field name="parent_id" ref="cat_bird_food"/><field name="sequence">2</field></record>
+    <record id="cat_bird_food_parrot_hookbill" model="product.public.category"><field name="name">Parrot &amp; Hookbill</field><field name="parent_id" ref="cat_bird_food"/><field name="sequence">3</field></record>
+    <record id="cat_bird_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_bird"/><field name="sequence">2</field></record>
+    <record id="cat_bird_supplies_cages_accessories" model="product.public.category"><field name="name">Cages &amp; Accessories</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_bird_supplies_dish" model="product.public.category"><field name="name">Dish</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_bird_supplies_grooming_health" model="product.public.category"><field name="name">Grooming &amp; Health</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_bird_supplies_litter_nesting" model="product.public.category"><field name="name">Litter &amp; Nesting</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_bird_supplies_perches_toys" model="product.public.category"><field name="name">Perches &amp; Toys</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">5</field></record>
+    <record id="cat_bird_supplies_treats" model="product.public.category"><field name="name">Treats</field><field name="parent_id" ref="cat_bird_supplies"/><field name="sequence">6</field></record>
+
+    <!-- ===== Fish ===== -->
+    <record id="cat_fish" model="product.public.category"><field name="name">Fish</field><field name="sequence">4</field></record>
+    <record id="cat_fish_food_treats" model="product.public.category"><field name="name">Food &amp; Treats</field><field name="parent_id" ref="cat_fish"/><field name="sequence">1</field></record>
+    <record id="cat_fish_food_treats_betta" model="product.public.category"><field name="name">Betta</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">1</field></record>
+    <record id="cat_fish_food_treats_bottom_feeder" model="product.public.category"><field name="name">Bottom Feeder</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">2</field></record>
+    <record id="cat_fish_food_treats_cichlid" model="product.public.category"><field name="name">Cichlid</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">3</field></record>
+    <record id="cat_fish_food_treats_koi_pond_fish" model="product.public.category"><field name="name">Koi &amp; Pond Fish</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">4</field></record>
+    <record id="cat_fish_food_treats_saltwater_fish" model="product.public.category"><field name="name">Saltwater Fish</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">5</field></record>
+    <record id="cat_fish_food_treats_saltwater_invertebrate" model="product.public.category"><field name="name">Saltwater Invertebrate</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">6</field></record>
+    <record id="cat_fish_food_treats_tropical_freshwater" model="product.public.category"><field name="name">Tropical Freshwater</field><field name="parent_id" ref="cat_fish_food_treats"/><field name="sequence">7</field></record>
+    <record id="cat_fish_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_fish"/><field name="sequence">2</field></record>
+    <record id="cat_fish_supplies_aquariums_starter_kits" model="product.public.category"><field name="name">Aquariums &amp; Starter Kits</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_fish_supplies_cleaning_maintenance" model="product.public.category"><field name="name">Cleaning &amp; Maintenance</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_fish_supplies_decor_accessories" model="product.public.category"><field name="name">Decor &amp; Accessories</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_fish_supplies_filters_media" model="product.public.category"><field name="name">Filters &amp; Media</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_fish_supplies_gifts_books" model="product.public.category"><field name="name">Gifts &amp; Books</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">5</field></record>
+    <record id="cat_fish_supplies_health_wellness" model="product.public.category"><field name="name">Health &amp; Wellness</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">6</field></record>
+    <record id="cat_fish_supplies_heating_lighting" model="product.public.category"><field name="name">Heating &amp; Lighting</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">7</field></record>
+    <record id="cat_fish_supplies_water_care" model="product.public.category"><field name="name">Water Care</field><field name="parent_id" ref="cat_fish_supplies"/><field name="sequence">8</field></record>
+
+    <!-- ===== Small Pet ===== -->
+    <record id="cat_small_pet" model="product.public.category"><field name="name">Small Pet</field><field name="sequence">5</field></record>
+    <record id="cat_small_pet_food" model="product.public.category"><field name="name">Food</field><field name="parent_id" ref="cat_small_pet"/><field name="sequence">1</field></record>
+    <record id="cat_small_pet_food_gerbil" model="product.public.category"><field name="name">Gerbil</field><field name="parent_id" ref="cat_small_pet_food"/><field name="sequence">1</field></record>
+    <record id="cat_small_pet_food_guinea_pig" model="product.public.category"><field name="name">Guinea Pig</field><field name="parent_id" ref="cat_small_pet_food"/><field name="sequence">2</field></record>
+    <record id="cat_small_pet_food_hamster" model="product.public.category"><field name="name">Hamster</field><field name="parent_id" ref="cat_small_pet_food"/><field name="sequence">3</field></record>
+    <record id="cat_small_pet_food_rabbit" model="product.public.category"><field name="name">Rabbit</field><field name="parent_id" ref="cat_small_pet_food"/><field name="sequence">4</field></record>
+    <record id="cat_small_pet_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_small_pet"/><field name="sequence">2</field></record>
+    <record id="cat_small_pet_supplies_bedding_litter" model="product.public.category"><field name="name">Bedding &amp; Litter</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_small_pet_supplies_beds_hideouts_toys" model="product.public.category"><field name="name">Beds, Hideouts &amp; Toys</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_small_pet_supplies_cages_accessories" model="product.public.category"><field name="name">Cages &amp; Accessories</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_small_pet_supplies_feed_feeder" model="product.public.category"><field name="name">Feed &amp; Feeder</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_small_pet_supplies_gifts_books" model="product.public.category"><field name="name">Gifts &amp; Books</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">5</field></record>
+    <record id="cat_small_pet_supplies_grooming_health" model="product.public.category"><field name="name">Grooming &amp; Health</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">6</field></record>
+    <record id="cat_small_pet_supplies_habitats_accessories" model="product.public.category"><field name="name">Habitats &amp; Accessories</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">7</field></record>
+    <record id="cat_small_pet_supplies_harnesses_carriers" model="product.public.category"><field name="name">Harnesses &amp; Carriers</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">8</field></record>
+    <record id="cat_small_pet_supplies_playpen_mat_cover" model="product.public.category"><field name="name">Playpen &amp; Mat/Cover</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">9</field></record>
+    <record id="cat_small_pet_supplies_treats" model="product.public.category"><field name="name">Treats</field><field name="parent_id" ref="cat_small_pet_supplies"/><field name="sequence">10</field></record>
+
+    <!-- ===== Reptile ===== -->
+    <record id="cat_reptile" model="product.public.category"><field name="name">Reptile</field><field name="sequence">6</field></record>
+    <record id="cat_reptile_food_treats" model="product.public.category"><field name="name">Food &amp; Treats</field><field name="parent_id" ref="cat_reptile"/><field name="sequence">1</field></record>
+    <record id="cat_reptile_food_treats_frog_newt" model="product.public.category"><field name="name">Frog &amp; Newt</field><field name="parent_id" ref="cat_reptile_food_treats"/><field name="sequence">1</field></record>
+    <record id="cat_reptile_food_treats_hermit_crab" model="product.public.category"><field name="name">Hermit Crab</field><field name="parent_id" ref="cat_reptile_food_treats"/><field name="sequence">2</field></record>
+    <record id="cat_reptile_food_treats_lizard" model="product.public.category"><field name="name">Lizard</field><field name="parent_id" ref="cat_reptile_food_treats"/><field name="sequence">3</field></record>
+    <record id="cat_reptile_food_treats_turtle" model="product.public.category"><field name="name">Turtle</field><field name="parent_id" ref="cat_reptile_food_treats"/><field name="sequence">4</field></record>
+    <record id="cat_reptile_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_reptile"/><field name="sequence">2</field></record>
+    <record id="cat_reptile_supplies_cleaning_maintenance" model="product.public.category"><field name="name">Cleaning &amp; Maintenance</field><field name="parent_id" ref="cat_reptile_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_reptile_supplies_health_wellness" model="product.public.category"><field name="name">Health &amp; Wellness</field><field name="parent_id" ref="cat_reptile_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_reptile_supplies_heating_lighting" model="product.public.category"><field name="name">Heating &amp; Lighting</field><field name="parent_id" ref="cat_reptile_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_reptile_supplies_substrate_bedding" model="product.public.category"><field name="name">Substrate &amp; Bedding</field><field name="parent_id" ref="cat_reptile_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_reptile_supplies_terrariums_habitats" model="product.public.category"><field name="name">Terrariums &amp; Habitats</field><field name="parent_id" ref="cat_reptile_supplies"/><field name="sequence">5</field></record>
+
+    <!-- ===== Horse ===== -->
+    <record id="cat_horse" model="product.public.category"><field name="name">Horse</field><field name="sequence">7</field></record>
+    <record id="cat_horse_health_wellness" model="product.public.category"><field name="name">Health &amp; Wellness</field><field name="parent_id" ref="cat_horse"/><field name="sequence">1</field></record>
+    <record id="cat_horse_health_wellness_dewormers" model="product.public.category"><field name="name">Dewormers</field><field name="parent_id" ref="cat_horse_health_wellness"/><field name="sequence">1</field></record>
+    <record id="cat_horse_health_wellness_first_aid" model="product.public.category"><field name="name">First Aid</field><field name="parent_id" ref="cat_horse_health_wellness"/><field name="sequence">2</field></record>
+    <record id="cat_horse_health_wellness_prescription_medication" model="product.public.category"><field name="name">Prescription &amp; Medication</field><field name="parent_id" ref="cat_horse_health_wellness"/><field name="sequence">3</field></record>
+    <record id="cat_horse_health_wellness_pest_control" model="product.public.category"><field name="name">Pest Control</field><field name="parent_id" ref="cat_horse_health_wellness"/><field name="sequence">4</field></record>
+    <record id="cat_horse_health_wellness_vitamins_supplements" model="product.public.category"><field name="name">Vitamins &amp; Supplements</field><field name="parent_id" ref="cat_horse_health_wellness"/><field name="sequence">5</field></record>
+    <record id="cat_horse_supplies" model="product.public.category"><field name="name">Supplies</field><field name="parent_id" ref="cat_horse"/><field name="sequence">2</field></record>
+    <record id="cat_horse_supplies_feed_treats" model="product.public.category"><field name="name">Feed &amp; Treats</field><field name="parent_id" ref="cat_horse_supplies"/><field name="sequence">1</field></record>
+    <record id="cat_horse_supplies_gifts_books" model="product.public.category"><field name="name">Gifts &amp; Books</field><field name="parent_id" ref="cat_horse_supplies"/><field name="sequence">2</field></record>
+    <record id="cat_horse_supplies_grooming" model="product.public.category"><field name="name">Grooming</field><field name="parent_id" ref="cat_horse_supplies"/><field name="sequence">3</field></record>
+    <record id="cat_horse_supplies_tack_stable_supplies" model="product.public.category"><field name="name">Tack &amp; Stable Supplies</field><field name="parent_id" ref="cat_horse_supplies"/><field name="sequence">4</field></record>
+    <record id="cat_horse_supplies_toys" model="product.public.category"><field name="name">Toys</field><field name="parent_id" ref="cat_horse_supplies"/><field name="sequence">5</field></record>
+
+    <!-- ===== Pharmacy ===== -->
     <record id="cat_pharmacy" model="product.public.category"><field name="name">Pharmacy</field><field name="sequence">8</field></record>
+    <record id="cat_pharmacy_health_conditions" model="product.public.category"><field name="name">Health Conditions</field><field name="parent_id" ref="cat_pharmacy"/><field name="sequence">1</field></record>
+    <record id="cat_pharmacy_health_conditions_behaviour_anxiety" model="product.public.category"><field name="name">Behaviour &amp; Anxiety</field><field name="parent_id" ref="cat_pharmacy_health_conditions"/><field name="sequence">1</field></record>
+    <record id="cat_pharmacy_health_conditions_dewormers_parasites" model="product.public.category"><field name="name">Dewormers &amp; Parasites</field><field name="parent_id" ref="cat_pharmacy_health_conditions"/><field name="sequence">2</field></record>
+    <record id="cat_pharmacy_health_conditions_digestive_support_enzymes" model="product.public.category"><field name="name">Digestive Support &amp; Enzymes</field><field name="parent_id" ref="cat_pharmacy_health_conditions"/><field name="sequence">3</field></record>
+    <record id="cat_pharmacy_health_conditions_immune_support" model="product.public.category"><field name="name">Immune Support</field><field name="parent_id" ref="cat_pharmacy_health_conditions"/><field name="sequence">4</field></record>
+    <record id="cat_pharmacy_health_conditions_urinary_tract_kidneys" model="product.public.category"><field name="name">Urinary Tract &amp; Kidneys</field><field name="parent_id" ref="cat_pharmacy_health_conditions"/><field name="sequence">5</field></record>
+    <record id="cat_pharmacy_medications_vaccines" model="product.public.category"><field name="name">Medications &amp; Vaccines</field><field name="parent_id" ref="cat_pharmacy"/><field name="sequence">2</field></record>
+    <record id="cat_pharmacy_medications_vaccines_antibiotics" model="product.public.category"><field name="name">Antibiotics</field><field name="parent_id" ref="cat_pharmacy_medications_vaccines"/><field name="sequence">1</field></record>
+    <record id="cat_pharmacy_medications_vaccines_antifungal" model="product.public.category"><field name="name">Antifungal</field><field name="parent_id" ref="cat_pharmacy_medications_vaccines"/><field name="sequence">2</field></record>
+    <record id="cat_pharmacy_medications_vaccines_devices_supplies" model="product.public.category"><field name="name">Devices &amp; Supplies</field><field name="parent_id" ref="cat_pharmacy_medications_vaccines"/><field name="sequence">3</field></record>
+    <record id="cat_pharmacy_medications_vaccines_pain_relief" model="product.public.category"><field name="name">Pain Relief</field><field name="parent_id" ref="cat_pharmacy_medications_vaccines"/><field name="sequence">4</field></record>
+    <record id="cat_pharmacy_treatment" model="product.public.category"><field name="name">Treatment</field><field name="parent_id" ref="cat_pharmacy"/><field name="sequence">3</field></record>
+    <record id="cat_pharmacy_treatment_allergy_relief" model="product.public.category"><field name="name">Allergy Relief</field><field name="parent_id" ref="cat_pharmacy_treatment"/><field name="sequence">1</field></record>
+    <record id="cat_pharmacy_treatment_ear_eye_care" model="product.public.category"><field name="name">Ear &amp; Eye Care</field><field name="parent_id" ref="cat_pharmacy_treatment"/><field name="sequence">2</field></record>
+    <record id="cat_pharmacy_treatment_flea_tick" model="product.public.category"><field name="name">Flea &amp; Tick</field><field name="parent_id" ref="cat_pharmacy_treatment"/><field name="sequence">3</field></record>
+    <record id="cat_pharmacy_treatment_pain_relief_arthritis" model="product.public.category"><field name="name">Pain Relief &amp; Arthritis</field><field name="parent_id" ref="cat_pharmacy_treatment"/><field name="sequence">4</field></record>
+    <record id="cat_pharmacy_treatment_skin_coat" model="product.public.category"><field name="name">Skin &amp; Coat</field><field name="parent_id" ref="cat_pharmacy_treatment"/><field name="sequence">5</field></record>
 
 </odoo>

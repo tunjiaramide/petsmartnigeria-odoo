@@ -46,11 +46,47 @@ body, .pm-header, .pm-home, .pm-footer, .pm-status {
     &--quiet { opacity: .9; }
 }
 .pm-cart sup { position: absolute; top: -.55rem; left: .8rem; background: $pm-orange; color: #fff; border-radius: 999px; font-size: .6rem; min-width: 1rem; height: 1rem; display: grid; place-items: center; padding: 0 .25rem; }
-.pm-header__nav { background: $pm-blue-dark; color: #fff; }
-.pm-header__nav .pm-header__row { justify-content: space-between; padding-top: .55rem; padding-bottom: .55rem; }
-.pm-nav { list-style: none; display: flex; gap: 1.6rem; margin: 0; padding: 0; overflow-x: auto; white-space: nowrap;
-    a { color: #fff; font-size: .82rem; font-weight: 500; &:hover { opacity: .8; } }
+.pm-header__nav { background: $pm-blue-dark; color: #fff; position: relative; }
+.pm-header__nav .pm-header__row { justify-content: space-between; }
+.pm-nav { list-style: none; display: flex; gap: 1.35rem; margin: 0; padding: 0; white-space: nowrap; align-self: stretch;
+    &__item { display: flex; }
+    &__link { display: inline-flex; align-items: center; gap: .35rem; padding: .8rem 0; color: #fff; font-size: .82rem; font-weight: 500; border-bottom: 3px solid transparent; }
+    &__link:hover { color: #fff; }
+    &__chev { width: .6rem; height: .4rem; flex: none; transition: transform .15s; }
     &__deals { color: #ffb08c !important; }
+}
+
+/* ---------- Mega menu (desktop): opens on hover or keyboard focus ---------- */
+.pm-mega { position: absolute; left: 0; right: 0; top: 100%; z-index: 1050; background: #fff; color: $pm-ink; white-space: normal;
+    border-top: 1px solid $pm-line; box-shadow: 0 22px 34px rgba(11, 27, 63, .16); padding: 1.8rem 0 1.4rem; max-height: calc(100vh - 11rem); overflow-y: auto;
+    visibility: hidden; opacity: 0; transition: opacity .14s ease, visibility 0s linear .14s;
+    > .container { padding-left: 15px; padding-right: 15px; }   /* line up with the header row */
+    &__grid { display: flex; flex-wrap: wrap; gap: 1.6rem 2.6rem; align-items: flex-start; }
+    &__group { flex: 1 1 11rem; min-width: 11rem; max-width: 17rem;
+        &--x2 { flex: 2 1 24rem; max-width: 36rem; .pm-mega__list { columns: 2; column-gap: 2.6rem; } }
+        &--x3 { flex: 3 1 36rem; max-width: none; .pm-mega__list { columns: 3; column-gap: 2.6rem; } } }
+    &__title { display: flex; align-items: center; gap: .5rem; padding-bottom: .55rem; margin-bottom: .7rem; border-bottom: 1px solid $pm-line;
+        color: $pm-ink !important; font-size: 1.05rem; font-weight: 600; text-decoration: none;
+        span { color: $pm-muted; font-size: 1.1rem; line-height: 1; transition: transform .15s; }
+        &:hover { color: $pm-blue !important; span { color: $pm-blue; transform: translateX(3px); } } }
+    &__list { list-style: none; margin: 0; padding: 0;
+        li { break-inside: avoid; }
+        a { display: block; padding: .26rem 0; color: #33405f !important; font-size: .86rem; font-weight: 400; text-decoration: none;
+            &:hover { color: $pm-blue !important; text-decoration: underline; text-underline-offset: 3px; } } }
+    &__all { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.4rem; color: $pm-blue !important; font-size: .9rem; font-weight: 600; text-decoration: none;
+        span { font-size: 1.1rem; line-height: 1; transition: transform .15s; } &:hover span { transform: translateX(3px); } }
+}
+@media (min-width: 992px) {
+    .pm-nav__item--mega:hover, .pm-nav__item--mega:focus-within {
+        > .pm-nav__link { border-bottom-color: $pm-orange; .pm-nav__chev { transform: rotate(180deg); } }
+        > .pm-mega { visibility: visible; opacity: 1; transition-delay: .08s, .08s; }
+    }
+}
+/* phones and tablets: the bar scrolls sideways and each item opens its category page */
+@media (max-width: 991px) {
+    .pm-nav { overflow-x: auto; gap: 1.2rem; }
+    .pm-nav__chev, .pm-mega { display: none; }
+    .pm-header__nav .pm-header__row { flex-wrap: nowrap; }
 }
 .pm-pill { background: $pm-orange; color: #fff !important; border-radius: 999px; padding: .4rem 1rem; font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; gap: .35rem; flex: none;
     .pm-icon { width: .9rem; height: .9rem; } }

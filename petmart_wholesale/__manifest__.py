@@ -1,7 +1,7 @@
 {
     'name': 'PETSMART Wholesale (B2B)',
     'summary': 'Wholesale shop: open catalogue, prices and ordering for approved customers, minimum order, stock status badges',
-    'version': '19.0.1.1.0',
+    'version': '19.0.1.2.0',
     'category': 'Website/Website',
     'author': 'PETSMART Nigeria',
     'license': 'LGPL-3',
@@ -15,6 +15,8 @@
         'payment_flutterwave',
     ],
     'data': [
+        'security/petmart_security.xml',
+        'security/ir.model.access.csv',
         'data/data.xml',
         'data/currency.xml',
         'views/res_partner_views.xml',

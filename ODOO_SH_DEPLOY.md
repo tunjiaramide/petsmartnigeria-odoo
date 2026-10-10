@@ -95,8 +95,13 @@ in this order, lets you check the Nigerian accounting loaded before anything els
 
 ### A5. Staff and roles
 1. Settings → Users → create a user for each person who uploads products or approves customers.
-2. Approvers: **Sales → Administrator** (only Sales Managers see the *Approve wholesale* button).
-   Product uploaders: **Inventory → User** and **Website → Editor** (verify exact role names).
+2. On the user form, under **PETSMART → Store role**, pick one:
+   - **Uploader** – creates, edits, publishes and deletes products and shop categories, sets wholesale
+     prices and stock, sees orders. Cannot approve accounts.
+   - **Editor** – everything an Uploader can do, plus approving or rejecting wholesale accounts.
+
+   Sales Administrators and Odoo administrators have Editor rights automatically. Neither role can change
+   settings or create users.
 3. Everyone: turn on two-factor (avatar → My Preferences → Account Security).
 4. Staff home page: My Preferences → **Home Action** → Dashboards (per user; needs developer mode to show).
 

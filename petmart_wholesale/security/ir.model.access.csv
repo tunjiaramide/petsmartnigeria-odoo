@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_public_category_petmart_uploader,product.public.category uploader,website_sale.model_product_public_category,group_petmart_uploader,1,1,1,1
+access_product_ribbon_petmart_uploader,product.ribbon uploader,website_sale.model_product_ribbon,group_petmart_uploader,1,1,1,1

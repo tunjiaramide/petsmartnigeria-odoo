@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Starting list of brands for the product form. noupdate: staff add, rename or archive brands
+         in Website > eCommerce > Products > Brands and those changes are kept. -->
+    <record id="brand_animology" model="petmart.brand"><field name="name">Animology</field></record>
+    <record id="brand_atlas_pet_food" model="petmart.brand"><field name="name">Atlas Pet Food</field></record>
+    <record id="brand_boreal" model="petmart.brand"><field name="name">Boreal</field></record>
+    <record id="brand_bugalugs" model="petmart.brand"><field name="name">Bugalugs</field></record>
+    <record id="brand_bully_boss" model="petmart.brand"><field name="name">Bully Boss</field></record>
+    <record id="brand_coastal_pet_products" model="petmart.brand"><field name="name">Coastal Pet Products</field></record>
+    <record id="brand_ethical_pet_products" model="petmart.brand"><field name="name">Ethical Pet Products</field></record>
+    <record id="brand_ferplast" model="petmart.brand"><field name="name">Ferplast</field></record>
+    <record id="brand_fibre_cycle_breeder_celect" model="petmart.brand"><field name="name">Fibre Cycle-Breeder Celect</field></record>
+    <record id="brand_fm_brown" model="petmart.brand"><field name="name">FM Brown</field></record>
+    <record id="brand_fortan" model="petmart.brand"><field name="name">Fortan</field></record>
+    <record id="brand_four_paws_pet_products" model="petmart.brand"><field name="name">Four Paws Pet Products</field></record>
+    <record id="brand_gheda" model="petmart.brand"><field name="name">Gheda</field></record>
+    <record id="brand_johnson_s_vet_products" model="petmart.brand"><field name="name">Johnson's Vet Products</field></record>
+    <record id="brand_kyron_labs" model="petmart.brand"><field name="name">Kyron Labs</field></record>
+    <record id="brand_lilian_ruff" model="petmart.brand"><field name="name">Lilian Ruff</field></record>
+    <record id="brand_lots_of_love" model="petmart.brand"><field name="name">Lots of Love</field></record>
+    <record id="brand_max_molly" model="petmart.brand"><field name="name">Max &amp; Molly</field></record>
+    <record id="brand_monge" model="petmart.brand"><field name="name">Monge</field></record>
+    <record id="brand_msd_animal_health" model="petmart.brand"><field name="name">MSD Animal Health</field></record>
+    <record id="brand_naturvet" model="petmart.brand"><field name="name">Naturvet</field></record>
+    <record id="brand_noba_animal_co" model="petmart.brand"><field name="name">Noba Animal Co</field></record>
+    <record id="brand_nutroplan" model="petmart.brand"><field name="name">Nutroplan</field></record>
+    <record id="brand_pedigree" model="petmart.brand"><field name="name">Pedigree</field></record>
+    <record id="brand_petag" model="petmart.brand"><field name="name">PetAg</field></record>
+    <record id="brand_petmate" model="petmart.brand"><field name="name">Petmate</field></record>
+    <record id="brand_pets_choice_webbox" model="petmart.brand"><field name="name">Pets Choice/Webbox</field></record>
+    <record id="brand_pettex" model="petmart.brand"><field name="name">Pettex</field></record>
+    <record id="brand_prevue" model="petmart.brand"><field name="name">Prevue</field></record>
+    <record id="brand_primoscience" model="petmart.brand"><field name="name">Primoscience</field></record>
+    <record id="brand_pureluxe" model="petmart.brand"><field name="name">Pureluxe</field></record>
+    <record id="brand_rosewood_pet_products" model="petmart.brand"><field name="name">Rosewood Pet Products</field></record>
+    <record id="brand_royal_canin" model="petmart.brand"><field name="name">Royal Canin</field></record>
+    <record id="brand_sanicat" model="petmart.brand"><field name="name">Sanicat</field></record>
+    <record id="brand_specialty_feed" model="petmart.brand"><field name="name">Specialty Feed</field></record>
+    <record id="brand_su_bridge" model="petmart.brand"><field name="name">Su-Bridge</field></record>
+    <record id="brand_synergylabs" model="petmart.brand"><field name="name">SynergyLabs</field></record>
+    <record id="brand_transcendent_pet_products" model="petmart.brand"><field name="name">Transcendent Pet Products</field></record>
+    <record id="brand_whiskas" model="petmart.brand"><field name="name">Whiskas</field></record>
+    <record id="brand_wonderful_world_of_pets" model="petmart.brand"><field name="name">Wonderful World of Pets</field></record>
+    <record id="brand_world_s_best_cat_litter" model="petmart.brand"><field name="name">World's Best Cat Litter</field></record>
+
+</odoo>

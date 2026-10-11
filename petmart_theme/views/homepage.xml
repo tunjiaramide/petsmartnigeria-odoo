@@ -11,17 +11,17 @@
                 <section class="container pm-section">
                     <div id="pmHero" class="carousel slide pm-hero" data-bs-ride="carousel" data-bs-interval="6000">
                         <div class="carousel-inner">
-                            <!-- Banner images: replace hero-1.jpg … hero-3.jpg in static/src/img/banners (1170 x 430 px, or larger in the same proportion) -->
-                            <t t-foreach="[1, 2, 3]" t-as="pm_banner">
+                            <!-- Banner images: hero-1.jpg … hero-4.jpg in static/src/img/banners, shown in that order.
+                                 Size: 2400 x 800 px (3:1), JPG. Keep text and products in the middle 70% of the width (phones crop the sides). -->
+                            <t t-set="pm_banners" t-value="[1, 2, 3, 4]"/>
+                            <t t-foreach="pm_banners" t-as="pm_banner">
                                 <a t-attf-class="carousel-item pm-hero__banner#{' active' if pm_banner_first else ''}" href="/shop">
                                     <img class="pm-hero__img" t-attf-src="/petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg" t-attf-alt="PETSMART Nigeria promotion #{pm_banner}" t-att-loading="None if pm_banner_first else 'lazy'"/>
                                 </a>
                             </t>
                         </div>
                         <div class="carousel-indicators pm-hero__dots">
-                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="0" class="active" aria-label="Slide 1"/>
-                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="1" aria-label="Slide 2"/>
-                            <button type="button" data-bs-target="#pmHero" data-bs-slide-to="2" aria-label="Slide 3"/>
+                            <button t-foreach="pm_banners" t-as="pm_banner" type="button" data-bs-target="#pmHero" t-attf-data-bs-slide-to="#{pm_banner_index}" t-att-class="'active' if pm_banner_first else None" t-attf-aria-label="Slide #{pm_banner_index + 1}"/>
                         </div>
                     </div>
                 </section>

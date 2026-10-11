@@ -75,9 +75,9 @@
             <div class="pm-header">
                 <div class="pm-header__top">
                     <div class="container pm-header__row">
+                        <!-- Logo files: static/src/img/brand (logo.png = brand red, logo-white.png = for dark backgrounds) -->
                         <a href="/" class="pm-logo" aria-label="PETSMART Nigeria">
-                            <span class="pm-logo__mark"><t t-call="petmart_theme.icon" name.f="paw"/></span>
-                            <span class="pm-logo__text"><strong>PETSMART<sup>®</sup></strong><small>NIGERIA</small></span>
+                            <img class="pm-logo__img" src="/petmart_theme/static/src/img/brand/logo.png" alt="PETSMART Nigeria" width="720" height="233"/>
                         </a>
                         <form class="pm-search" action="/shop" method="get" role="search">
                             <input type="search" name="search" t-att-value="search" placeholder="Search products, brands, categories…" aria-label="Search"/>
@@ -169,9 +169,8 @@
                     </div>
                     <div class="pm-footer__grid">
                         <div>
-                            <a href="/" class="pm-logo pm-logo--footer">
-                                <span class="pm-logo__mark"><t t-call="petmart_theme.icon" name.f="paw"/></span>
-                                <span class="pm-logo__text"><strong>PETSMART</strong><small>NIGERIA</small></span>
+                            <a href="/" class="pm-logo pm-logo--footer" aria-label="PETSMART Nigeria">
+                                <img class="pm-logo__img" src="/petmart_theme/static/src/img/brand/logo-white.png" alt="PETSMART Nigeria" width="720" height="233" loading="lazy"/>
                             </a>
                             <p class="pm-footer__tag">Everything Your Pet Business Needs.</p>
                         </div>

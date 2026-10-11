@@ -77,7 +77,7 @@
                     <div class="container pm-header__row">
                         <!-- Logo files: static/src/img/brand (logo.png = brand red, logo-white.png = for dark backgrounds) -->
                         <a href="/" class="pm-logo" aria-label="PETSMART Nigeria">
-                            <img class="pm-logo__img" src="/petmart_theme/static/src/img/brand/logo.png" alt="PETSMART Nigeria" width="720" height="233"/>
+                            <img class="pm-logo__img" src="/petmart_theme/static/src/img/brand/logo-white.png" alt="PETSMART Nigeria" width="720" height="233"/>
                         </a>
                         <form class="pm-search" action="/shop" method="get" role="search">
                             <input type="search" name="search" t-att-value="search" placeholder="Search products, brands, categories…" aria-label="Search"/>
@@ -139,7 +139,7 @@
                                     </div>
                                 </li>
                             </t>
-                            <li class="pm-nav__item"><a class="pm-nav__link" href="/shop">Brands</a></li>
+                            <li class="pm-nav__item"><a class="pm-nav__link" href="/brands">Brands</a></li>
                             <li class="pm-nav__item"><a class="pm-nav__link" href="/shop?order=create_date+desc">New Arrivals</a></li>
                             <li class="pm-nav__item"><a class="pm-nav__link pm-nav__deals" href="/shop?order=create_date+desc">Deals</a></li>
                         </ul>
@@ -209,7 +209,7 @@
                             <h6>Company</h6>
                             <ul>
                                 <li><a href="/contactus">About PETSMART</a></li>
-                                <li><a href="/shop">Brands</a></li>
+                                <li><a href="/brands">Brands</a></li>
                                 <li><a href="/contactus">Careers</a></li>
                                 <li><a href="/contactus">Contact</a></li>
                             </ul>

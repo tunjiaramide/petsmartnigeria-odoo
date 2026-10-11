@@ -50,6 +50,16 @@ class ProductTemplate(models.Model):
     # Prices are only for staff and approved wholesale customers
     # ------------------------------------------------------------------
     @api.model
+    def _get_website_sale_search_fields(self, search_in_description=True):
+        return super()._get_website_sale_search_fields(search_in_description) + ['petmart_brand']
+
+    @api.model
+    def _search_get_detail(self, website, order, options):
+        detail = super()._search_get_detail(website, order, options)
+        if options.get('petmart_brands'):
+            detail['base_domain'].append([('petmart_brand_id', 'in', options['petmart_brands'])])
+        return detail
+
     def _petmart_price_locked(self):
         """True on the website for a visitor who may browse but not see prices."""
         return bool(request) and request.is_frontend and not request.website._petmart_can_order()

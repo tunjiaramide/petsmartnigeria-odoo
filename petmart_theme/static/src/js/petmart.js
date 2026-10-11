@@ -31,3 +31,28 @@ document.addEventListener('click', async (ev) => {
         btn.disabled = false;
     }
 });
+
+/* Shop brand filter: "Find a brand" box and the "+ N more" link. */
+document.addEventListener('input', (ev) => {
+    const body = ev.target.closest('[data-pm-brandfilter]');
+    if (!body || !ev.target.matches('input[type="search"]')) {
+        return;
+    }
+    const term = ev.target.value.trim().toLowerCase();
+    let shown = 0;
+    body.querySelectorAll('.pm-brandlist > li').forEach((item) => {
+        const match = item.querySelector('span').textContent.toLowerCase().includes(term);
+        item.classList.toggle('d-none', !match);
+        shown += match ? 1 : 0;
+    });
+    body.classList.toggle('is-searching', Boolean(term));
+    body.querySelector('.pm-brandfilter__none').classList.toggle('d-none', shown > 0);
+});
+document.addEventListener('click', (ev) => {
+    const more = ev.target.closest('.pm-brandfilter__more');
+    if (!more) {
+        return;
+    }
+    const open = more.closest('[data-pm-brandfilter]').classList.toggle('is-open');
+    more.textContent = open ? more.dataset.less : more.dataset.more;
+});

@@ -93,6 +93,93 @@
         </xpath>
     </template>
 
+    <!-- Shop: brand tick-box list (brands that have products in the category / search being viewed) -->
+    <template id="shop_brand_list" name="PETSMART shop brand list">
+        <div class="pm-brandfilter__body" data-pm-brandfilter="1">
+            <label t-if="len(pm_brands) &gt; 7" class="pm-brandfilter__search">
+                <input type="search" placeholder="Find a brand" aria-label="Find a brand" autocomplete="off"/>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+            </label>
+            <ul class="pm-brandlist list-unstyled mb-0">
+                <li t-foreach="pm_brands" t-as="pm_item" t-att-class="'pm-brandlist__extra' if pm_item_index &gt;= 7 else None">
+                    <a t-att-href="keep(brand=pm_item['toggle'])" rel="nofollow" role="checkbox"
+                       t-att-aria-checked="'true' if pm_item['checked'] else 'false'"
+                       t-attf-class="pm-brandlist__link {{'active' if pm_item['checked'] else ''}}">
+                        <i class="pm-brandlist__box" aria-hidden="true"/>
+                        <span t-out="pm_item['brand'].name"/>
+                        <small>(<t t-out="pm_item['count']"/>)</small>
+                    </a>
+                </li>
+            </ul>
+            <p class="pm-brandfilter__none d-none mb-0">No brand matches.</p>
+            <button t-if="len(pm_brands) &gt; 7" type="button" class="pm-brandfilter__more"
+                    t-attf-data-more="+ #{len(pm_brands) - 7} more" data-less="Show less">+ <t t-out="len(pm_brands) - 7"/> more</button>
+        </div>
+    </template>
+
+    <template id="products_brand_filter" inherit_id="website_sale.products" name="PETSMART shop brand filter" priority="30">
+        <xpath expr="//t[@t-call='website_sale.sidebar_dropzone_at_bottom']" position="before">
+            <div t-if="pm_brands" class="pm-brandfilter">
+                <h6 class="pm-brandfilter__title">Brand</h6>
+                <t t-call="petmart_wholesale.shop_brand_list"/>
+            </div>
+        </xpath>
+        <xpath expr="//header[@id='o_wsale_products_header']" position="before">
+            <div t-if="pm_brands_selected" class="pm-brandchip">
+                <span>Brand: <b t-out="', '.join(pm_brands_selected.mapped('name'))"/></span>
+                <a t-att-href="keep(brand=0)" aria-label="Show all brands" title="Show all brands">&#215;</a>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Same list in the phone filter panel -->
+    <template id="offcanvas_brand_filter" inherit_id="website_sale.o_wsale_offcanvas" name="PETSMART phone brand filter" priority="30">
+        <xpath expr="//div[@id='o_wsale_offcanvas_content']" position="inside">
+            <div t-if="pm_brands" class="accordion-item d-lg-none">
+                <h2 id="pm_offcanvas_brands_header" class="accordion-header mb-0">
+                    <button class="o_wsale_offcanvas_title accordion-button rounded-0 collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#pm_offcanvas_brands"
+                            aria-expanded="false" aria-controls="pm_offcanvas_brands">
+                        <b>Brands</b>
+                    </button>
+                </h2>
+                <div id="pm_offcanvas_brands" class="accordion-collapse collapse" aria-labelledby="pm_offcanvas_brands_header">
+                    <div class="accordion-body pt-0">
+                        <t t-call="petmart_wholesale.shop_brand_list"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Brands page: every brand, A to Z -->
+    <template id="brands_page" name="Brands">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Brands</t>
+            <div id="wrap" class="pm-brands container py-5">
+                <div class="pm-brands__head">
+                    <h1>Shop by brand</h1>
+                    <p>Every brand we stock, A to Z. Pick one to see its products.</p>
+                    <nav class="pm-brands__letters" aria-label="Jump to letter">
+                        <a t-foreach="brand_letters" t-as="pm_group" t-attf-href="#brands-#{pm_group_index}" t-out="pm_group[0]"/>
+                    </nav>
+                </div>
+                <section t-foreach="brand_letters" t-as="pm_group" class="pm-brands__group" t-attf-id="brands-#{pm_group_index}">
+                    <h2 t-out="pm_group[0]"/>
+                    <div class="pm-brands__grid">
+                        <a t-foreach="pm_group[1]" t-as="pm_b" class="pm-brands__tile" t-attf-href="/shop?brand=#{pm_b.id}">
+                            <b t-out="pm_b.name"/>
+                            <t t-set="pm_n" t-value="brand_counts.get(pm_b.id, 0)"/>
+                            <small t-if="pm_n == 1">1 product</small>
+                            <small t-elif="pm_n"><t t-out="pm_n"/> products</small>
+                            <small t-else="" class="pm-brands__soon">Coming soon</small>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
     <!-- Status page for customers who are signed in but not yet approved -->
     <template id="pending_page" name="Wholesale account status">
         <t t-call="website.layout">

@@ -11,5 +11,7 @@ def post_init_hook(env):
     settings = env['res.config.settings'].create({
         'group_stock_production_lot': True,
         'group_lot_on_delivery_slip': True,
+        # product sizes (variants): shows the Attributes & Variants tab on the product form
+        'group_product_variant': True,
     })
     settings.execute()

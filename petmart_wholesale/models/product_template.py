@@ -9,7 +9,9 @@ STOCK_STATUS = [('available', 'Available'), ('low', 'Low stock'), ('out', 'Out o
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    petmart_brand = fields.Char(string='Brand')
+    petmart_brand_id = fields.Many2one('petmart.brand', string='Brand', ondelete='set null', index='btree_not_null')
+    # brand name as text: what the website templates print
+    petmart_brand = fields.Char(related='petmart_brand_id.name', string='Brand name', store=True)
     petmart_low_stock_threshold = fields.Float(
         string='Low-stock threshold', default=50.0,
         help="At or below this available quantity the website shows LOW STOCK. "

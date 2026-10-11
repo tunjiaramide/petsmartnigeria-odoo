@@ -1,6 +1,7 @@
 from . import res_partner
 from . import res_users
 from . import website
+from . import petmart_brand
 from . import product_template
 from . import product_product
 from . import sale_order

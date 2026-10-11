@@ -9,12 +9,13 @@
         <field name="inherit_id" ref="website_sale.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='is_published'][@widget='boolean_toggle']" position="after">
-                <field name="petmart_brand"/>
-                <field name="petmart_stock_status" widget="badge"
+                <field name="petmart_brand_id" options="{'no_open': True}"/>
+                <!-- what customers see; only meaningful once the product is saved and its stock is tracked -->
+                <field name="petmart_stock_status" widget="badge" invisible="not id or not is_storable"
                        decoration-success="petmart_stock_status == 'available'"
                        decoration-warning="petmart_stock_status == 'low'"
                        decoration-danger="petmart_stock_status == 'out'"/>
-                <field name="petmart_low_stock_threshold"/>
+                <field name="petmart_low_stock_threshold" invisible="not is_storable"/>
             </xpath>
         </field>
     </record>

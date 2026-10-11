@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_public_category_petmart_uploader,product.public.category uploader,website_sale.model_product_public_category,group_petmart_uploader,1,1,1,1
+access_petmart_brand_uploader,petmart.brand uploader,model_petmart_brand,group_petmart_uploader,1,1,1,1
+access_petmart_brand_user,petmart.brand user,model_petmart_brand,base.group_user,1,0,0,0
+access_petmart_brand_portal,petmart.brand portal,model_petmart_brand,base.group_portal,1,0,0,0
+access_petmart_brand_public,petmart.brand public,model_petmart_brand,base.group_public,1,0,0,0
 access_product_ribbon_petmart_uploader,product.ribbon uploader,website_sale.model_product_ribbon,group_petmart_uploader,1,1,1,1

@@ -11,16 +11,16 @@
                 <section class="container pm-section">
                     <div id="pmHero" class="carousel slide pm-hero" data-bs-ride="carousel" data-bs-interval="6000">
                         <div class="carousel-inner">
-                            <!-- Banner images: hero-1.jpg … hero-4.jpg in static/src/img/banners, shown in that order.
-                                 Size: 2400 x 800 px (3:1), JPG. Keep text and products in the middle 70% of the width (phones crop the sides). -->
-                            <t t-set="pm_banners" t-value="[1, 2, 3, 4]"/>
+                            <!-- Banner images: hero-1.jpg, hero-2.jpg … in static/src/img/banners; list their numbers below, in display order.
+                                 Size: 2880 x 592 px (same shape as chewy.com), JPG. The whole banner is shown on every screen. -->
+                            <t t-set="pm_banners" t-value="[1]"/>
                             <t t-foreach="pm_banners" t-as="pm_banner">
                                 <a t-attf-class="carousel-item pm-hero__banner#{' active' if pm_banner_first else ''}" href="/shop">
                                     <img class="pm-hero__img" t-attf-src="/petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg" t-attf-alt="PETSMART Nigeria promotion #{pm_banner}" t-att-loading="None if pm_banner_first else 'lazy'"/>
                                 </a>
                             </t>
                         </div>
-                        <div class="carousel-indicators pm-hero__dots">
+                        <div t-if="len(pm_banners) &gt; 1" class="carousel-indicators pm-hero__dots">
                             <button t-foreach="pm_banners" t-as="pm_banner" type="button" data-bs-target="#pmHero" t-attf-data-bs-slide-to="#{pm_banner_index}" t-att-class="'active' if pm_banner_first else None" t-attf-aria-label="Slide #{pm_banner_index + 1}"/>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="pm-info">
                         <div class="pm-info__hello">
                             <b t-if="pm_state == 'public'">Welcome to PETSMART</b>
-                            <b t-else="">Welcome back, <t t-out="request.env.user.name"/></b>
+                            <b t-else="">Welcome back,<span class="pm-info__name" t-att-title="request.env.user.name" t-out="request.env.user.name"/></b>
                             <a t-if="pm_state == 'public'" href="/web/login" class="pm-btn pm-btn--blue">Sign in</a>
                             <a t-elif="pm_state == 'approved'" href="/my" class="pm-btn pm-btn--blue">My account</a>
                             <a t-else="" href="/wholesale/pending" class="pm-btn pm-btn--blue">Application status</a>

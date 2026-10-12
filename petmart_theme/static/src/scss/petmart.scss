@@ -115,13 +115,15 @@ body, .pm-header, .pm-home, .pm-footer, .pm-status {
 /* ---------- Hero ---------- */
 .pm-hero { border-radius: 24px; background: linear-gradient(120deg, #eaf0fc, #f8faff); overflow: hidden; position: relative; }
 /* image banners: the picture is the whole slide and links to the shop */
-.pm-hero__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; min-height: 11rem; object-fit: cover; }
+.pm-hero__img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 592; object-fit: cover; }
 .pm-hero__dots { margin-bottom: .8rem; button { width: .5rem !important; height: .5rem !important; border: 0 !important; border-radius: 999px; background: #b7c5e6 !important; background-clip: border-box !important; opacity: 1; margin: 0 .25rem; &.active { width: 1.6rem !important; background: $pm-blue !important; } } }
 
 /* ---------- Welcome bar under the slider ---------- */
 .pm-info { display: flex; align-items: center; gap: 1.2rem; background: #eef0f3; border-radius: $pm-radius; padding: 1.4rem 1.6rem;
-    &__hello { display: flex; align-items: center; gap: 1rem; flex: 0 1 auto; max-width: 40%; padding: 0 1rem 0 .6rem;
-        b { font-size: 1.3rem; font-weight: 700; color: $pm-ink; line-height: 1.2; }
+    &__hello { display: flex; align-items: center; gap: 1rem; flex: 0 1 auto; min-width: 0; max-width: 44%; padding: 0 1rem 0 .6rem;
+        b { font-size: 1.3rem; font-weight: 700; color: $pm-ink; line-height: 1.2; min-width: 0; }
+        /* the name (often a long email address) goes on its own smaller line and is shortened with … if it still does not fit */
+        .pm-info__name { display: block; margin-top: .15rem; font-size: .95rem; font-weight: 600; color: $pm-muted; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .pm-btn { flex: none; padding: .8rem 1.5rem; font-size: .9rem; border-radius: 12px; background: linear-gradient(180deg, #2a5bd7, $pm-blue); white-space: nowrap; } }
     &__card { display: flex; align-items: stretch; flex: 1 1 0; min-width: 0; background: #fff; border-radius: 14px; overflow: hidden; min-height: 5.2rem; }
     &__icon { flex: none; width: 4.4rem; display: grid; place-items: center; background: #f4f5f7; color: $pm-blue;

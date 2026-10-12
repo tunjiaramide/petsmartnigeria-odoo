@@ -12,6 +12,8 @@ class ProductTemplate(models.Model):
     petmart_brand_id = fields.Many2one('petmart.brand', string='Brand', ondelete='set null', index='btree_not_null')
     # brand name as text: what the website templates print
     petmart_brand = fields.Char(related='petmart_brand_id.name', string='Brand name', store=True)
+    # no overselling: customers cannot order more than is in stock (Odoo's own default is to allow it)
+    allow_out_of_stock_order = fields.Boolean(default=False)
     petmart_low_stock_threshold = fields.Float(
         string='Low-stock threshold', default=50.0,
         help="At or below this available quantity the website shows LOW STOCK. "

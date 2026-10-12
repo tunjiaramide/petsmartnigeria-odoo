@@ -1,15 +1,52 @@
-from odoo import http
+from odoo import fields, http
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
-from odoo.addons.web.controllers.home import SIGN_UP_REQUEST_PARAMS
 from odoo.addons.website_sale.controllers.cart import Cart
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
-# Extra fields collected on the wholesale registration form.
-SIGN_UP_REQUEST_PARAMS.update({'company_name', 'phone', 'vat', 'street'})
+# Registration form (/web/signup): what the customer fills in. Names are res.partner fields
+# unless handled separately in _prepare_signup_values.
+SIGNUP_REQUIRED = [
+    ('company_name', "Registered business name"),
+    ('wholesale_business_type', "Business type"),
+    ('building', "Shop / suite / building number"),
+    ('street', "Street address"),
+    ('street2', "Area / neighbourhood"),
+    ('city', "City / town"),
+    ('state_id', "State"),
+    ('country_id', "Country"),
+    ('wholesale_contact_role', "Position / role"),
+    ('phone', "Mobile phone number"),
+    ('wholesale_whatsapp', "WhatsApp number"),
+    ('wholesale_monthly_purchase', "Estimated monthly purchase value"),
+    ('wholesale_territory_state_id', "Primary sales territory"),
+    ('wholesale_customer_type', "Customer type"),
+    ('wholesale_heard_from', "How did you hear about Pets-Mart"),
+]
+SIGNUP_TEXT = [
+    'company_name', 'street2', 'city', 'phone', 'vat',
+    'wholesale_trading_name', 'wholesale_business_type_other', 'wholesale_cac_number',
+    'wholesale_year_established', 'wholesale_branch_count', 'wholesale_landmark', 'wholesale_maps_link',
+    'wholesale_delivery_address', 'wholesale_contact_role_other', 'wholesale_whatsapp', 'wholesale_alt_contact',
+    'wholesale_brands_stocked', 'wholesale_initial_order_value', 'wholesale_major_suppliers',
+    'wholesale_areas_served', 'wholesale_retail_customers', 'wholesale_logistics',
+    'wholesale_trade_references', 'wholesale_referral_name', 'wholesale_brands_wanted', 'wholesale_comments',
+]
+SIGNUP_SELECTION = [
+    'wholesale_business_type', 'wholesale_contact_role', 'wholesale_monthly_purchase',
+    'wholesale_order_frequency', 'wholesale_customer_type', 'wholesale_has_storage', 'wholesale_heard_from',
+]
+# Optional verification documents, saved as attachments on the contact.
+SIGNUP_DOCUMENTS = [
+    ('doc_cac', "CAC certificate"),
+    ('doc_premises', "Business premises photograph"),
+    ('doc_licence', "Veterinary practice licence"),
+]
+DOCUMENT_TYPES = ('.pdf', '.jpg', '.jpeg', '.png')
+DOCUMENT_MAX_SIZE = 5 * 1024 * 1024
 
 
 def _order_redirect():
@@ -25,20 +62,102 @@ def _order_redirect():
 
 class PetmartSignup(AuthSignupHome):
 
+    def get_auth_signup_qcontext(self):
+        """Lists for the registration form, and what was typed so far (so a
+        rejected submission does not have to be filled in again)."""
+        qcontext = super().get_auth_signup_qcontext()
+        if qcontext.get('token'):
+            return qcontext
+        env = request.env
+        form = request.httprequest.form
+        nigeria = env.ref('base.ng')
+        qcontext.update({
+            'pm_form': {key: value for key, value in form.items() if 'password' not in key},
+            'pm_form_categories': form.getlist('wholesale_category_ids'),
+            'pm_selections': {
+                name: env['res.partner']._fields[name]._description_selection(env) for name in SIGNUP_SELECTION},
+            'pm_states': env['res.country.state'].sudo().search([('country_id', '=', nigeria.id)]),
+            'pm_countries': env['res.country'].sudo().search([]),
+            'pm_nigeria': nigeria,
+            'pm_categories': env['website']._petmart_nav_categories(),
+        })
+        return qcontext
+
+    def _petmart_signup_documents(self):
+        """Uploaded verification documents as (label, filename, content)."""
+        documents = []
+        for key, label in SIGNUP_DOCUMENTS:
+            upload = request.httprequest.files.get(key)
+            if not upload or not upload.filename:
+                continue
+            if not upload.filename.lower().endswith(DOCUMENT_TYPES):
+                raise UserError(request.env._("%(document)s: please upload a PDF, JPG or PNG file.", document=label))
+            content = upload.read(DOCUMENT_MAX_SIZE + 1)
+            upload.seek(0)
+            if len(content) > DOCUMENT_MAX_SIZE:
+                raise UserError(request.env._("%(document)s: the file is larger than 5 MB.", document=label))
+            documents.append((label, upload.filename, content))
+        return documents
+
     def _prepare_signup_values(self, qcontext):
         values = super()._prepare_signup_values(qcontext)
-        if not qcontext.get('token'):
-            company_name = (qcontext.get('company_name') or '').strip()
-            phone = (qcontext.get('phone') or '').strip()
-            if not company_name or not phone:
-                raise UserError(request.env._("Business name and phone number are required."))
-            values.update({
-                'company_name': company_name,
-                'phone': phone,
-                'vat': (qcontext.get('vat') or '').strip() or False,
-                'street': (qcontext.get('street') or '').strip() or False,
-            })
+        if qcontext.get('token'):
+            return values
+        env = request.env
+        form = request.httprequest.form
+        text = lambda key: (form.get(key) or '').strip()
+
+        missing = [label for key, label in SIGNUP_REQUIRED if not text(key)]
+        categories = env['product.public.category'].sudo().browse(
+            [int(value) for value in form.getlist('wholesale_category_ids') if value.isdigit()]).exists()
+        if not categories:
+            missing.append(env._("Product categories of interest"))
+        if not form.get('accept_terms'):
+            missing.append(env._("Acceptance of the B2B terms and conditions"))
+        if not form.get('accept_privacy'):
+            missing.append(env._("Acknowledgement of the privacy notice"))
+        if missing:
+            raise UserError(env._("Please complete: %(fields)s.", fields=', '.join(missing)))
+
+        Partner = env['res.partner']
+        for name in SIGNUP_SELECTION:
+            if text(name) and text(name) not in dict(Partner._fields[name].selection):
+                raise UserError(env._("The form was not properly filled in."))
+        records = {}
+        for name, model in (('state_id', 'res.country.state'), ('country_id', 'res.country'),
+                            ('wholesale_territory_state_id', 'res.country.state')):
+            record = env[model].sudo().browse(int(text(name)) if text(name).isdigit() else 0).exists()
+            if not record:
+                raise UserError(env._("The form was not properly filled in."))
+            records[name] = record.id
+        self._petmart_signup_documents()  # refuse wrong or oversized files before the account exists
+
+        values.update({name: text(name) or False for name in SIGNUP_TEXT})
+        values.update({name: text(name) or False for name in SIGNUP_SELECTION})
+        values.update(records)
+        values.update({
+            'street': ', '.join(part for part in (text('building'), text('street')) if part),
+            'website': text('business_website') or False,
+            'wholesale_category_ids': [fields.Command.set(categories.ids)],
+            'wholesale_terms_accepted_on': fields.Datetime.now(),
+            'wholesale_marketing_consent': bool(form.get('wholesale_marketing_consent')),
+        })
         return values
+
+    def do_signup(self, qcontext, *args, **kwargs):
+        res = super().do_signup(qcontext, *args, **kwargs)
+        if qcontext.get('token'):
+            return res
+        Users = request.env['res.users'].sudo()
+        user = Users.search(Users._get_login_domain(qcontext.get('login')), limit=1)
+        for label, filename, content in self._petmart_signup_documents() if user else []:
+            request.env['ir.attachment'].sudo().create({
+                'name': '%s - %s' % (label, filename),
+                'raw': content,
+                'res_model': 'res.partner',
+                'res_id': user.partner_id.id,
+            })
+        return res
 
 
 class PetmartShop(WebsiteSale):
@@ -125,6 +244,10 @@ class PetmartBrands(http.Controller):
 
 
 class WholesaleStatus(http.Controller):
+
+    @http.route('/wholesale/terms', type='http', auth='public', website=True, sitemap=True)
+    def terms(self, **kw):
+        return request.render('petmart_wholesale.terms_page')
 
     @http.route('/wholesale/pending', type='http', auth='user', website=True, sitemap=False)
     def pending(self, **kw):

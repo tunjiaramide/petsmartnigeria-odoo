@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- B2B registration form (Pets-Mart Nigeria B2B Registration & Customer Approval Framework).
+         Required details are always visible; optional ones sit under "Add more details" in each section.
+         Field names match res.partner; see SIGNUP_* in controllers/main.py. -->
+
+    <!-- One text box. Call with _name.f, _label.f and optionally _required, _type.f, _placeholder.f, _class.f -->
+    <template id="signup_input" name="PETSMART registration: text box">
+        <div t-attf-class="pm-field #{_class or ''}">
+            <label t-att-for="_name" class="form-label"><t t-out="_label"/><span t-if="_required" class="pm-req"> *</span></label>
+            <input t-att-type="_type or 'text'" t-att-name="_name" t-att-id="_name" class="form-control"
+                   t-att-value="pm_form.get(_name)" t-att-placeholder="_placeholder"
+                   t-att-required="'required' if _required else None"/>
+        </div>
+    </template>
+
+    <!-- One drop-down. _options is a list of (value, label); _default pre-selects a value. -->
+    <template id="signup_select" name="PETSMART registration: drop-down">
+        <div t-attf-class="pm-field #{_class or ''}">
+            <label t-att-for="_name" class="form-label"><t t-out="_label"/><span t-if="_required" class="pm-req"> *</span></label>
+            <t t-set="_current" t-value="pm_form.get(_name) or _default or ''"/>
+            <select t-att-name="_name" t-att-id="_name" class="form-select" t-att-required="'required' if _required else None">
+                <option value="">Select…</option>
+                <option t-foreach="_options" t-as="_option" t-att-value="_option[0]"
+                        t-att-selected="'selected' if str(_option[0]) == _current else None" t-out="_option[1]"/>
+            </select>
+        </div>
+    </template>
+
+    <template id="signup_business_fields" inherit_id="auth_signup.signup" name="Wholesale registration form" priority="20">
+        <xpath expr="//form" position="attributes">
+            <attribute name="enctype">multipart/form-data</attribute>
+            <attribute name="t-attf-class">oe_signup_form #{'' if token else 'pm-signup'}</attribute>
+        </xpath>
+        <!-- after registering, land on the application status page -->
+        <xpath expr="//input[@name='redirect']" position="attributes">
+            <attribute name="t-att-value">redirect or (None if token else '/wholesale/pending')</attribute>
+        </xpath>
+        <xpath expr="//label[@for='name']" position="replace">
+            <label for="name" class="form-label">Full name<span t-if="not token" class="pm-req"> *</span></label>
+        </xpath>
+        <xpath expr="//label[@for='login']" position="replace">
+            <label for="login" class="form-label"><t t-if="token">Email</t><t t-else="">Business email address<span class="pm-req"> *</span></t></label>
+        </xpath>
+
+        <!-- Sections 1 and 2, then the heading of section 3 (name and email are Odoo's own boxes) -->
+        <xpath expr="//div[hasclass('field-name')]" position="before">
+            <t t-if="not token">
+                <div class="pm-signup__intro">
+                    <h1>Open a wholesale account</h1>
+                    <p>For pet shops, veterinary clinics, breeders, groomers and distributors. Every application is reviewed by
+                        our team before wholesale prices and ordering are unlocked. Boxes marked <span class="pm-req">*</span> are required.</p>
+                </div>
+
+                <h2 class="pm-signup__title">1. Business information</h2>
+                <t t-call="petmart_wholesale.signup_input" _name.f="company_name" _label.f="Registered business name" _required="True"/>
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_business_type" _label.f="Business type" _required="True"
+                   _options="pm_selections['wholesale_business_type']"/>
+                <details class="pm-signup__more" t-att-open="'open' if pm_form.get('wholesale_business_type') == 'other' else None">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_business_type_other" _label.f="If &quot;Other&quot;, what type of business?"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_trading_name" _label.f="Trading name (if different)"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_cac_number" _label.f="CAC registration number"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_year_established" _label.f="Year established" _placeholder.f="e.g. 2015"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="business_website" _label.f="Website or social media page"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_branch_count" _label.f="Number of branches / outlets"/>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">2. Business address</h2>
+                <t t-call="petmart_wholesale.signup_input" _name.f="building" _label.f="Shop / suite / building number" _required="True"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="street" _label.f="Street address" _required="True"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="street2" _label.f="Area / neighbourhood" _required="True"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="city" _label.f="City / town" _required="True"/>
+                <t t-call="petmart_wholesale.signup_select" _name.f="state_id" _label.f="State" _required="True"
+                   _options="[(str(state.id), state.name) for state in pm_states]"/>
+                <t t-call="petmart_wholesale.signup_select" _name.f="country_id" _label.f="Country" _required="True"
+                   _options="[(str(country.id), country.name) for country in pm_countries]" _default="str(pm_nigeria.id)"/>
+                <details class="pm-signup__more">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_landmark" _label.f="Nearest landmark"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_maps_link" _label.f="Google Maps location link"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_delivery_address" _label.f="Additional delivery address" _class.f="pm-field--wide"/>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">3. Contact person</h2>
+            </t>
+        </xpath>
+
+        <!-- Rest of section 3, sections 4 to 7, then the heading of section 8 (password boxes are Odoo's own) -->
+        <xpath expr="//div[hasclass('field-login')]" position="after">
+            <t t-if="not token">
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_contact_role" _label.f="Position / role" _required="True"
+                   _options="pm_selections['wholesale_contact_role']"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="phone" _label.f="Mobile phone number" _required="True" _type.f="tel" _placeholder.f="0800 000 0000"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_whatsapp" _label.f="WhatsApp number" _required="True" _type.f="tel" _placeholder.f="0800 000 0000"/>
+                <details class="pm-signup__more" t-att-open="'open' if pm_form.get('wholesale_contact_role') == 'other' else None">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_contact_role_other" _label.f="If &quot;Other&quot;, what is your role?"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_alt_contact" _label.f="Alternative contact person and number"/>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">4. Purchasing profile</h2>
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_monthly_purchase" _label.f="Estimated monthly purchase value" _required="True"
+                   _options="pm_selections['wholesale_monthly_purchase']"/>
+                <div class="pm-field pm-field--wide">
+                    <span class="form-label d-block">Product categories of interest<span class="pm-req"> *</span></span>
+                    <div class="pm-signup__checks">
+                        <label t-foreach="pm_categories" t-as="pm_category" class="form-check">
+                            <input type="checkbox" class="form-check-input" name="wholesale_category_ids" t-att-value="pm_category.id"
+                                   t-att-checked="'checked' if str(pm_category.id) in pm_form_categories else None"/>
+                            <span class="form-check-label" t-out="pm_category.name"/>
+                        </label>
+                    </div>
+                </div>
+                <details class="pm-signup__more">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_brands_stocked" _label.f="Brands currently stocked"/>
+                        <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_order_frequency" _label.f="Preferred order frequency"
+                           _options="pm_selections['wholesale_order_frequency']"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_initial_order_value" _label.f="Initial estimated order value (₦)"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_major_suppliers" _label.f="Current major suppliers"/>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">5. Distribution and market coverage</h2>
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_territory_state_id" _label.f="Primary sales territory / state" _required="True"
+                   _options="[(str(state.id), state.name) for state in pm_states]"/>
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_customer_type" _label.f="Customer type (who you sell to)" _required="True"
+                   _options="pm_selections['wholesale_customer_type']"/>
+                <details class="pm-signup__more">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_areas_served" _label.f="Areas or states currently served"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_retail_customers" _label.f="Number of retail customers supplied"/>
+                        <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_has_storage" _label.f="Do you have a warehouse / storage facility?"
+                           _options="pm_selections['wholesale_has_storage']"/>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_logistics" _label.f="Delivery / logistics capability" _placeholder.f="e.g. own van, dispatch riders"/>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">6. Business verification</h2>
+                <p class="pm-signup__note">Optional now. We may ask for these documents before approving your account. PDF, JPG or PNG, up to 5 MB each.</p>
+                <details class="pm-signup__more">
+                    <summary>Add documents and references (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <div class="pm-field">
+                            <label for="doc_cac" class="form-label">CAC certificate / business registration document</label>
+                            <input type="file" name="doc_cac" id="doc_cac" class="form-control" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </div>
+                        <div class="pm-field">
+                            <label for="doc_premises" class="form-label">Business premises photograph</label>
+                            <input type="file" name="doc_premises" id="doc_premises" class="form-control" accept=".jpg,.jpeg,.png,.pdf"/>
+                        </div>
+                        <div class="pm-field">
+                            <label for="doc_licence" class="form-label">Veterinary practice licence (where applicable)</label>
+                            <input type="file" name="doc_licence" id="doc_licence" class="form-control" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </div>
+                        <t t-call="petmart_wholesale.signup_input" _name.f="vat" _label.f="Tax Identification Number (TIN)"/>
+                        <div class="pm-field pm-field--wide">
+                            <label for="wholesale_trade_references" class="form-label">Trade references</label>
+                            <textarea name="wholesale_trade_references" id="wholesale_trade_references" class="form-control" rows="2"
+                                      placeholder="Names and phone numbers of suppliers or businesses that know you" t-out="pm_form.get('wholesale_trade_references')"/>
+                        </div>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">7. Marketing and referral</h2>
+                <t t-call="petmart_wholesale.signup_select" _name.f="wholesale_heard_from" _label.f="How did you hear about Pets-Mart?" _required="True"
+                   _options="pm_selections['wholesale_heard_from']"/>
+                <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_referral_name" _label.f="Sales representative / referral name"/>
+                <details class="pm-signup__more">
+                    <summary>Add more details (optional)</summary>
+                    <div class="pm-signup__grid">
+                        <t t-call="petmart_wholesale.signup_input" _name.f="wholesale_brands_wanted" _label.f="Brands / products you want Pets-Mart to supply" _class.f="pm-field--wide"/>
+                        <div class="pm-field pm-field--wide">
+                            <label for="wholesale_comments" class="form-label">Additional comments / business requirements</label>
+                            <textarea name="wholesale_comments" id="wholesale_comments" class="form-control" rows="2" t-out="pm_form.get('wholesale_comments')"/>
+                        </div>
+                    </div>
+                </details>
+
+                <h2 class="pm-signup__title">8. Account security and agreement</h2>
+            </t>
+        </xpath>
+
+        <!-- Agreement tick boxes under the password boxes -->
+        <xpath expr="//t[@t-call='auth_signup.fields']" position="after">
+            <t t-if="not token">
+                <div class="pm-field pm-field--wide pm-signup__agree">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" name="accept_terms" value="1" required="required"
+                               t-att-checked="'checked' if pm_form.get('accept_terms') else None"/>
+                        <span class="form-check-label">I accept the <a href="/wholesale/terms#terms" target="_blank">B2B terms and conditions</a><span class="pm-req"> *</span></span>
+                    </label>
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" name="accept_privacy" value="1" required="required"
+                               t-att-checked="'checked' if pm_form.get('accept_privacy') else None"/>
+                        <span class="form-check-label">I have read the <a href="/wholesale/terms#privacy" target="_blank">privacy notice</a><span class="pm-req"> *</span></span>
+                    </label>
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" name="wholesale_marketing_consent" value="1"
+                               t-att-checked="'checked' if pm_form.get('wholesale_marketing_consent') else None"/>
+                        <span class="form-check-label">Send me Pets-Mart offers and product news by WhatsApp and email (optional)</span>
+                    </label>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- B2B terms and privacy notice linked from the registration form -->
+    <template id="terms_page" name="B2B terms and privacy notice">
+        <t t-call="website.layout">
+            <t t-set="additional_title">B2B terms and privacy notice</t>
+            <div id="wrap" class="pm-terms container py-5">
+                <h1>B2B terms and privacy notice</h1>
+                <section id="terms">
+                    <h2>B2B terms and conditions</h2>
+                    <ul>
+                        <li>This website is a wholesale platform for registered businesses. Registering does not by itself give access: every account is reviewed and approved by Pets-Mart Nigeria.</li>
+                        <li>Approval does not automatically grant distributor pricing or credit. Pricing tiers and any credit terms are assigned by Pets-Mart based on the customer's classification. Accounts are prepaid unless credit has been approved in writing.</li>
+                        <li>Prices, stock information and other commercial details shown to approved customers are confidential and must not be shared with third parties.</li>
+                        <li>You are responsible for keeping your login details secure and for all orders placed from your account.</li>
+                        <li>Pets-Mart may suspend or close an account that gives false information or misuses the platform.</li>
+                    </ul>
+                </section>
+                <section id="privacy">
+                    <h2>Privacy notice</h2>
+                    <ul>
+                        <li>We collect the business, contact and purchasing details on the registration form to verify that you are a legitimate trade customer, to set up your account and to process and deliver your orders.</li>
+                        <li>Verification documents you upload are stored securely and are seen only by the Pets-Mart staff who review accounts.</li>
+                        <li>We do not sell your information. We share it only where needed to serve you, for example with delivery and payment providers.</li>
+                        <li>Promotional WhatsApp and email messages are sent only if you tick the separate consent box, and you can ask us to stop at any time.</li>
+                        <li>To see, correct or delete your information, <a href="/contactus">contact us</a>.</li>
+                    </ul>
+                </section>
+            </div>
+        </t>
+    </template>
+
+</odoo>

@@ -64,35 +64,6 @@
         </xpath>
     </template>
 
-    <!-- Registration form: business details for the approval screening -->
-    <template id="signup_business_fields" inherit_id="auth_signup.signup" name="Wholesale registration fields">
-        <xpath expr="//div[hasclass('field-login')]" position="after">
-            <t t-if="not token">
-                <div class="mb-3 field-company">
-                    <label for="company_name" class="form-label">Business name</label>
-                    <input type="text" name="company_name" id="company_name" class="form-control"
-                           t-att-value="company_name" required="required" placeholder="Your pet shop / clinic / distributor"/>
-                </div>
-                <div class="mb-3 field-phone">
-                    <label for="phone" class="form-label">Phone number</label>
-                    <input type="tel" name="phone" id="phone" class="form-control"
-                           t-att-value="phone" required="required" placeholder="0800 000 0000"/>
-                </div>
-                <div class="mb-3 field-street">
-                    <label for="street" class="form-label">Business address</label>
-                    <input type="text" name="street" id="street" class="form-control" t-att-value="street"/>
-                </div>
-                <div class="mb-3 field-vat">
-                    <label for="vat" class="form-label">RC / Tax ID (optional)</label>
-                    <input type="text" name="vat" id="vat" class="form-control" t-att-value="vat"/>
-                </div>
-                <p class="text-muted small">
-                    Wholesale accounts are reviewed before prices and ordering are unlocked.
-                </p>
-            </t>
-        </xpath>
-    </template>
-
     <!-- Shop: brand tick-box list (brands that have products in the category / search being viewed) -->
     <template id="shop_brand_list" name="PETSMART shop brand list">
         <div class="pm-brandfilter__body" data-pm-brandfilter="1">
@@ -189,6 +160,11 @@
                         <h1>Your wholesale application is under review</h1>
                         <p class="lead">Thank you for registering. Our team screens every business account before
                             wholesale prices and ordering are unlocked. We will email you as soon as you are approved.</p>
+                    </t>
+                    <t t-elif="wholesale_state == 'suspended'">
+                        <h1>This account is suspended</h1>
+                        <p class="lead">Wholesale prices and ordering are switched off for this account for now.
+                            Please contact our team to resolve it.</p>
                     </t>
                     <t t-elif="wholesale_state == 'rejected'">
                         <h1>We could not approve this application</h1>

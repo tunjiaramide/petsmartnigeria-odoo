@@ -15,3 +15,6 @@ def post_init_hook(env):
         'group_product_variant': True,
     })
     settings.execute()
+
+    # No overselling on products that existed before this module was installed.
+    env['product.template'].with_context(active_test=False).search([]).write({'allow_out_of_stock_order': False})

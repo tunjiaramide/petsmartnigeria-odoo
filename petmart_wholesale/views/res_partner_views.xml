@@ -13,7 +13,11 @@
                             invisible="wholesale_state in ('approved', 'none')"/>
                     <button name="action_wholesale_reject" string="Reject" type="object"
                             groups="petmart_wholesale.group_petmart_editor"
-                            invisible="wholesale_state in ('rejected', 'none')"/>
+                            invisible="wholesale_state != 'pending'"/>
+                    <button name="action_wholesale_suspend" string="Suspend" type="object"
+                            groups="petmart_wholesale.group_petmart_editor"
+                            invisible="wholesale_state != 'approved'"
+                            confirm="Suspend this account? The customer will no longer see prices or be able to order."/>
                     <button name="action_wholesale_reset" string="Back to pending" type="object"
                             groups="petmart_wholesale.group_petmart_editor"
                             invisible="wholesale_state in ('pending', 'none')"/>
@@ -21,9 +25,77 @@
                            statusbar_visible="pending,approved"/>
                 </header>
             </xpath>
-            <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="after">
-                <field name="wholesale_approved_by" groups="petmart_wholesale.group_petmart_editor"/>
-                <field name="wholesale_approved_on" groups="petmart_wholesale.group_petmart_editor"/>
+            <xpath expr="//notebook" position="inside">
+                <page string="Wholesale application" name="wholesale_application" invisible="wholesale_state == 'none'">
+                    <group string="Account set-up (staff only)" groups="petmart_wholesale.group_petmart_editor">
+                        <group>
+                            <field name="ref" string="Customer account ID"/>
+                            <field name="wholesale_customer_category"/>
+                            <field name="wholesale_pricing_tier"/>
+                            <field name="user_id" string="Assigned sales representative"/>
+                        </group>
+                        <group>
+                            <field name="wholesale_credit_terms"/>
+                            <field name="wholesale_credit_limit" invisible="wholesale_credit_terms != 'credit'"/>
+                            <field name="wholesale_approved_by"/>
+                            <field name="wholesale_approved_on"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="1. Business information">
+                            <field name="company_name" string="Registered business name"/>
+                            <field name="wholesale_trading_name"/>
+                            <field name="wholesale_business_type"/>
+                            <field name="wholesale_business_type_other" invisible="wholesale_business_type != 'other'"/>
+                            <field name="wholesale_cac_number"/>
+                            <field name="wholesale_year_established"/>
+                            <field name="wholesale_branch_count"/>
+                        </group>
+                        <group string="2. Address extras">
+                            <field name="wholesale_landmark"/>
+                            <field name="wholesale_maps_link" widget="url"/>
+                            <field name="wholesale_delivery_address"/>
+                        </group>
+                        <group string="3. Contact person">
+                            <field name="wholesale_contact_role"/>
+                            <field name="wholesale_contact_role_other" invisible="wholesale_contact_role != 'other'"/>
+                            <field name="wholesale_whatsapp" widget="phone"/>
+                            <field name="wholesale_alt_contact"/>
+                        </group>
+                        <group string="4. Purchasing profile">
+                            <field name="wholesale_monthly_purchase"/>
+                            <field name="wholesale_category_ids" widget="many2many_tags"/>
+                            <field name="wholesale_brands_stocked"/>
+                            <field name="wholesale_order_frequency"/>
+                            <field name="wholesale_initial_order_value"/>
+                            <field name="wholesale_major_suppliers"/>
+                        </group>
+                        <group string="5. Distribution and market coverage">
+                            <field name="wholesale_territory_state_id" options="{'no_create': True}"/>
+                            <field name="wholesale_areas_served"/>
+                            <field name="wholesale_customer_type"/>
+                            <field name="wholesale_retail_customers"/>
+                            <field name="wholesale_has_storage"/>
+                            <field name="wholesale_logistics"/>
+                        </group>
+                        <group string="6. Verification">
+                            <field name="vat" string="Tax Identification Number (TIN)"/>
+                            <field name="wholesale_trade_references"/>
+                            <div colspan="2" class="text-muted">Uploaded documents (CAC certificate, premises photo, licence) are in the
+                                attachments of this contact: the paperclip above the message history.</div>
+                        </group>
+                        <group string="7. Marketing and referral">
+                            <field name="wholesale_heard_from"/>
+                            <field name="wholesale_referral_name"/>
+                            <field name="wholesale_brands_wanted"/>
+                            <field name="wholesale_comments"/>
+                        </group>
+                        <group string="8. Agreement">
+                            <field name="wholesale_terms_accepted_on"/>
+                            <field name="wholesale_marketing_consent"/>
+                        </group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
@@ -38,8 +110,53 @@
                         domain="[('wholesale_state', '=', 'pending')]"/>
                 <filter name="wholesale_approved" string="Wholesale: approved"
                         domain="[('wholesale_state', '=', 'approved')]"/>
+                <filter name="wholesale_suspended" string="Wholesale: suspended"
+                        domain="[('wholesale_state', '=', 'suspended')]"/>
+                <filter name="wholesale_rejected" string="Wholesale: rejected"
+                        domain="[('wholesale_state', '=', 'rejected')]"/>
             </xpath>
         </field>
     </record>
+
+    <!-- Applications list: Website > eCommerce > Wholesale applications -->
+    <record id="view_partner_list_wholesale" model="ir.ui.view">
+        <field name="name">res.partner.list.wholesale</field>
+        <field name="model">res.partner</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <list string="Wholesale applications" create="0" default_order="create_date desc">
+                <field name="ref" string="Account ID"/>
+                <field name="company_name" string="Business"/>
+                <field name="name" string="Contact person"/>
+                <field name="wholesale_business_type"/>
+                <field name="state_id"/>
+                <field name="wholesale_monthly_purchase"/>
+                <field name="phone"/>
+                <field name="create_date" string="Registered on"/>
+                <field name="wholesale_pricing_tier" optional="show"/>
+                <field name="user_id" string="Sales rep" optional="hide"/>
+                <field name="wholesale_state" widget="badge"
+                       decoration-warning="wholesale_state == 'pending'"
+                       decoration-success="wholesale_state == 'approved'"
+                       decoration-danger="wholesale_state in ('rejected', 'suspended')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_wholesale_applications" model="ir.actions.act_window">
+        <field name="name">Wholesale applications</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_partner_list_wholesale"/>
+        <field name="domain">[('wholesale_state', '!=', 'none')]</field>
+        <field name="context">{'search_default_wholesale_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No applications waiting</p>
+            <p>Businesses that register on the website appear here for review. Remove the "pending approval" filter to see every account.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_wholesale_applications" name="Wholesale applications" parent="website_sale.menu_orders"
+              action="action_wholesale_applications" sequence="1" groups="petmart_wholesale.group_petmart_editor"/>
 
 </odoo>

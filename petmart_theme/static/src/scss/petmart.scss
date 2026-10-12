@@ -456,3 +456,32 @@ $pm-font: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     &__soon { color: $pm-muted !important; }
 }
 @media (max-width: 575px) { .pm-brands__grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- B2B registration form (/web/signup) and its terms page ---------- */
+#wrapwrap .oe_signup_form.pm-signup { max-width: 52rem; margin: 2.5rem auto 4rem; padding: 2rem 2.2rem; background: #fff; border: 1px solid $pm-line; border-radius: $pm-radius;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem;
+    > * { grid-column: 1 / -1; }
+    > .pm-field, > .field-name, > .field-login, > .field-password, > .field-confirm_password { grid-column: auto; }
+    > .pm-field--wide { grid-column: 1 / -1; }
+    .pm-field { margin-bottom: 1rem; }
+    .form-label { font-weight: 600; font-size: .88rem; color: $pm-ink; margin-bottom: .3rem; }
+    .pm-req { color: #d33a2c; font-weight: 700; }
+}
+.pm-signup__intro { margin-bottom: .5rem; h1 { font-size: 1.7rem; margin-bottom: .4rem; } p { color: $pm-muted; margin: 0; } }
+.pm-signup__title { font-size: 1.05rem; font-weight: 700; color: $pm-blue; margin: 1.6rem 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid $pm-line; }
+.pm-signup__note { color: $pm-muted; font-size: .88rem; margin-bottom: .6rem; }
+.pm-signup__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; padding-top: .9rem; .pm-field--wide { grid-column: 1 / -1; } }
+.pm-signup__more { margin-bottom: .4rem; padding: .6rem .9rem; border-radius: 12px; background: #f6f8fd;
+    summary { cursor: pointer; color: $pm-blue; font-weight: 600; font-size: .88rem; } }
+.pm-signup__checks { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem 1rem; }
+.pm-signup__agree { margin-top: .4rem; .form-check { display: block; margin-bottom: .45rem; } }
+.pm-terms { max-width: 52rem; color: $pm-ink;
+    h1 { margin-bottom: 1.5rem; }
+    h2 { font-size: 1.25rem; margin: 2rem 0 .8rem; scroll-margin-top: 9rem; }
+    li { margin-bottom: .5rem; } }
+@media (max-width: 767px) {
+    #wrapwrap .oe_signup_form.pm-signup { grid-template-columns: 1fr; padding: 1.3rem 1.1rem; margin-top: 1.2rem; }
+    .pm-signup__grid { grid-template-columns: 1fr; }
+    .pm-signup__checks { grid-template-columns: repeat(2, 1fr); }
+}
+#wrapwrap .oe_signup_form.pm-signup > .field-password, #wrapwrap .oe_signup_form.pm-signup > .field-confirm_password { align-self: end; }

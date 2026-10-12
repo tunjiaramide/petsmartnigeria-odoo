@@ -9,6 +9,29 @@
         <field name="selectable" eval="False"/>
     </record>
 
+    <!-- The other two pricing tiers. With no price lines they charge the product's Sales Price. -->
+    <record id="pricelist_retailer" model="product.pricelist">
+        <field name="name">Retailer (NGN)</field>
+        <field name="currency_id" ref="base.NGN"/>
+        <field name="company_id" eval="False"/>
+        <field name="selectable" eval="False"/>
+    </record>
+    <record id="pricelist_distributor" model="product.pricelist">
+        <field name="name">Distributor (NGN)</field>
+        <field name="currency_id" ref="base.NGN"/>
+        <field name="company_id" eval="False"/>
+        <field name="selectable" eval="False"/>
+    </record>
+
+    <!-- Customer account ID given at registration: PMN-00001 -->
+    <record id="seq_petmart_customer" model="ir.sequence">
+        <field name="name">PETSMART customer account ID</field>
+        <field name="code">petmart.customer</field>
+        <field name="prefix">PMN-</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
     <!-- Business rules editable in Settings > Technical > System Parameters -->
     <record id="param_min_order_amount" model="ir.config_parameter">
         <field name="key">petmart.min_order_amount</field>

@@ -16,7 +16,7 @@ class Website(models.Model):
         return user.sudo().partner_id.commercial_partner_id.wholesale_state == 'approved'
 
     def _petmart_wholesale_state(self):
-        """'public', 'none', 'pending', 'approved' or 'rejected' for the current visitor."""
+        """'public', 'none', 'pending', 'approved', 'rejected' or 'suspended' for the current visitor."""
         user = self.env.user
         if user._is_public():
             return 'public'

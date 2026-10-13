@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="redirect_form">
+        <!-- The checkout opens as an overlay (see payment_form.js); the form is the fallback. -->
+        <form t-att-action="api_url" method="get"
+              t-att-data-access-code="access_code" t-att-data-return-url="return_url"/>
+    </template>
+
+</odoo>

@@ -76,8 +76,6 @@
                 <t t-call="petmart_wholesale.signup_input" _name.f="city" _label.f="City / town" _required="True"/>
                 <t t-call="petmart_wholesale.signup_select" _name.f="state_id" _label.f="State" _required="True"
                    _options="[(str(state.id), state.name) for state in pm_states]"/>
-                <t t-call="petmart_wholesale.signup_select" _name.f="country_id" _label.f="Country" _required="True"
-                   _options="[(str(country.id), country.name) for country in pm_countries]" _default="str(pm_nigeria.id)"/>
                 <details class="pm-signup__more">
                     <summary>Add more details (optional)</summary>
                     <div class="pm-signup__grid">
@@ -243,6 +241,14 @@
                 </section>
             </div>
         </t>
+    </template>
+
+    <!-- Deliveries are within Nigeria only: no country choice on the checkout / My Account address form.
+         The field stays in the page (hidden) because the form script reads it. -->
+    <template id="address_form_nigeria_only" inherit_id="portal.address_form_fields">
+        <xpath expr="//div[@id='div_country']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
     </template>
 
 </odoo>

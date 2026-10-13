@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_paystack" model="payment.provider">
+        <field name="name">Paystack</field>
+        <field name="code">paystack</field>
+        <field name="image_128" type="base64" file="petmart_paystack/static/description/icon.png"/>
+        <field name="module_id" ref="base.module_petmart_paystack"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
+        <field name="payment_method_ids"
+               eval="[Command.set([
+                         ref('payment.payment_method_card'),
+                         ref('payment.payment_method_bank_transfer'),
+                         ref('payment.payment_method_ussd'),
+                         ref('payment.payment_method_mobile_money'),
+                     ])]"/>
+    </record>
+
+</odoo>

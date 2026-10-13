@@ -4,6 +4,7 @@ from odoo.fields import Domain
 from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
+from odoo.addons.portal.controllers.portal import CustomerPortal
 from odoo.addons.website_sale.controllers.cart import Cart
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
@@ -17,7 +18,6 @@ SIGNUP_REQUIRED = [
     ('street2', "Area / neighbourhood"),
     ('city', "City / town"),
     ('state_id', "State"),
-    ('country_id', "Country"),
     ('wholesale_contact_role', "Position / role"),
     ('phone', "Mobile phone number"),
     ('wholesale_whatsapp', "WhatsApp number"),
@@ -77,7 +77,6 @@ class PetmartSignup(AuthSignupHome):
             'pm_selections': {
                 name: env['res.partner']._fields[name]._description_selection(env) for name in SIGNUP_SELECTION},
             'pm_states': env['res.country.state'].sudo().search([('country_id', '=', nigeria.id)]),
-            'pm_countries': env['res.country'].sudo().search([]),
             'pm_nigeria': nigeria,
             'pm_categories': env['website']._petmart_nav_categories(),
         })
@@ -123,8 +122,8 @@ class PetmartSignup(AuthSignupHome):
         for name in SIGNUP_SELECTION:
             if text(name) and text(name) not in dict(Partner._fields[name].selection):
                 raise UserError(env._("The form was not properly filled in."))
-        records = {}
-        for name, model in (('state_id', 'res.country.state'), ('country_id', 'res.country'),
+        records = {'country_id': env.ref('base.ng').id}  # deliveries are within Nigeria only
+        for name, model in (('state_id', 'res.country.state'),
                             ('wholesale_territory_state_id', 'res.country.state')):
             record = env[model].sudo().browse(int(text(name)) if text(name).isdigit() else 0).exists()
             if not record:
@@ -160,7 +159,21 @@ class PetmartSignup(AuthSignupHome):
         return res
 
 
-class PetmartShop(WebsiteSale):
+class NigeriaOnlyAddress:
+    """Deliveries are within Nigeria only: the address form offers no other country."""
+
+    def _prepare_address_form_values(self, *args, **kwargs):
+        values = super()._prepare_address_form_values(*args, **kwargs)
+        nigeria = request.env.ref('base.ng').sudo()
+        values.update(country=nigeria, countries=nigeria, country_states=nigeria.state_ids)
+        return values
+
+
+class PetmartPortal(NigeriaOnlyAddress, CustomerPortal):
+    pass
+
+
+class PetmartShop(NigeriaOnlyAddress, WebsiteSale):
 
     def _petmart_brands(self):
         """Brands ticked in the shop (?brand=<id>,<id>), or an empty recordset."""

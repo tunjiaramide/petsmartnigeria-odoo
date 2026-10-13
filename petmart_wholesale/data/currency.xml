@@ -8,4 +8,10 @@
         <value eval="{'active': True, 'position': 'before'}"/>
     </function>
 
+    <!-- Nigerian addresses rarely have a postcode: do not make it compulsory at checkout. -->
+    <function model="res.country" name="write">
+        <value eval="[ref('base.ng')]"/>
+        <value eval="{'zip_required': False}"/>
+    </function>
+
 </odoo>

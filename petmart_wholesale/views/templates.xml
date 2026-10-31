@@ -157,9 +157,9 @@
             <div id="wrap" class="pm-status container py-5">
                 <div class="pm-status__card mx-auto text-center">
                     <t t-if="wholesale_state == 'pending'">
-                        <h1>Your wholesale application is under review</h1>
-                        <p class="lead">Thank you for registering. Our team screens every business account before
-                            wholesale prices and ordering are unlocked. We will email you as soon as you are approved.</p>
+                        <h1>Pre-registration pending</h1>
+                        <p class="lead">Your pre-registration is being processed by our team.</p>
+                        <p>Keep an eye on your email box, the answer will be provided to you soon!</p>
                     </t>
                     <t t-elif="wholesale_state == 'suspended'">
                         <h1>This account is suspended</h1>
@@ -186,6 +186,24 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <!-- My Account: customers who are not approved see where their application stands -->
+    <template id="portal_my_home_wholesale_notice" inherit_id="portal.portal_my_home" name="PETSMART application notice on My Account">
+        <xpath expr="//div[@id='oe_structure_portal_my_home_1']" position="before">
+            <t t-set="pm_state" t-value="request.website._petmart_wholesale_state()"/>
+            <div t-if="pm_state == 'pending'" class="alert alert-info mt-3" role="status">
+                <h5 class="alert-heading">Pre-registration pending</h5>
+                <p class="mb-0">Your pre-registration is being processed by our team.
+                    Keep an eye on your email box, the answer will be provided to you soon!</p>
+            </div>
+            <div t-elif="pm_state != 'approved'" class="alert alert-warning mt-3" role="status">
+                <t t-if="pm_state == 'suspended'">This account is suspended: wholesale prices and ordering are switched off for now.</t>
+                <t t-elif="pm_state == 'rejected'">We could not approve your wholesale application.</t>
+                <t t-else="">Wholesale prices and ordering are available to approved businesses only.</t>
+                <a href="/wholesale/pending" class="alert-link ms-1">View application status</a>
+            </div>
+        </xpath>
     </template>
 
 </odoo>

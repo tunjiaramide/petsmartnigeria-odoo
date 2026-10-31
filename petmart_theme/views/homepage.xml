@@ -11,12 +11,17 @@
                 <section class="container pm-section">
                     <div id="pmHero" class="carousel slide pm-hero" data-bs-ride="carousel" data-bs-interval="6000">
                         <div class="carousel-inner">
-                            <!-- Banner images: hero-1.jpg, hero-2.jpg … in static/src/img/banners; list their numbers below, in display order.
-                                 Size: 2880 x 592 px (same shape as chewy.com), JPG. The whole banner is shown on every screen. -->
-                            <t t-set="pm_banners" t-value="[1]"/>
+                            <!-- Banner images in static/src/img/banners; list their numbers below, in display order.
+                                 Each banner is two JPGs: hero-N.jpg at 2880 x 600 px and hero-N-1440.jpg at 1440 x 300 px
+                                 (the browser picks the smaller one on phones). The whole banner is shown on every screen. -->
+                            <t t-set="pm_banners" t-value="[1, 2, 3, 4]"/>
                             <t t-foreach="pm_banners" t-as="pm_banner">
                                 <a t-attf-class="carousel-item pm-hero__banner#{' active' if pm_banner_first else ''}" href="/shop">
-                                    <img class="pm-hero__img" t-attf-src="/petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg" t-attf-alt="PETSMART Nigeria promotion #{pm_banner}" t-att-loading="None if pm_banner_first else 'lazy'"/>
+                                    <img class="pm-hero__img" width="2880" height="600"
+                                         t-attf-src="/petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg"
+                                         t-attf-srcset="/petmart_theme/static/src/img/banners/hero-#{pm_banner}-1440.jpg 1440w, /petmart_theme/static/src/img/banners/hero-#{pm_banner}.jpg 2880w"
+                                         sizes="(min-width: 1400px) 1320px, 100vw"
+                                         t-attf-alt="PETSMART Nigeria promotion #{pm_banner}" t-att-loading="None if pm_banner_first else 'lazy'"/>
                                 </a>
                             </t>
                         </div>

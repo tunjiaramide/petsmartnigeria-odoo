@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- PETSMART charges for goods only. Delivery is priced by staff after the order is placed
+         and sent to the customer, so every total the customer sees carries this note. -->
+    <template id="delivery_cost_note" name="PETSMART delivery cost note">
+        <p class="pm-delivery-note text-muted small mb-0">
+            <i class="fa fa-truck me-1" role="presentation"/>
+            <t t-if="pm_note_invoice">Delivery cost is not included in this invoice. It will be calculated and sent to you separately.</t>
+            <t t-else="">Delivery cost is not included. We will calculate it and send it to you after you place your order.</t>
+        </p>
+    </template>
+
+    <!-- Cart, checkout, payment and confirmation pages: no delivery price, note under the total -->
+    <template id="total_delivery_note" inherit_id="website_sale.total" name="PETSMART delivery note in totals">
+        <!-- Odoo's free delivery method would show ₦0.00 here; the amount span stays (Odoo's script
+             writes into it) but is never shown -->
+        <xpath expr="//span[@name='o_message_no_dm_set']" position="replace">
+            <span name="o_message_no_dm_set" class="text-muted">To be advised</span>
+        </xpath>
+        <xpath expr="//tr[@name='o_order_delivery']//span[contains(@t-att-class, 'monetary_field')]" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+        </xpath>
+        <xpath expr="//tr[@name='o_order_total']" position="after">
+            <tr name="pm_delivery_note">
+                <td colspan="3" class="border-0 px-0 pt-0 pb-2">
+                    <t t-call="petmart_wholesale.delivery_cost_note"/>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+
+    <!-- Checkout delivery method: hide the "Free" price badge -->
+    <template id="delivery_method_no_price" inherit_id="website_sale.delivery_method" name="PETSMART delivery method without price">
+        <xpath expr="//span[@name='price']" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+        </xpath>
+    </template>
+
+    <!-- Customer's order page (My Account > Orders) -->
+    <template id="portal_order_delivery_note" inherit_id="sale.sale_order_portal_content" name="PETSMART delivery note on order page">
+        <xpath expr="//div[@id='total']" position="after">
+            <div class="col-xs-7 col-md-5 ms-auto mt-2">
+                <t t-call="petmart_wholesale.delivery_cost_note"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Quotation / order PDF -->
+    <template id="report_saleorder_delivery_note" inherit_id="sale.report_saleorder_document" name="PETSMART delivery note on order PDF">
+        <xpath expr="//div[@id='total']" position="after">
+            <div class="mt-2 mb-3">
+                <t t-call="petmart_wholesale.delivery_cost_note"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Customer invoice PDF (not on credit notes) -->
+    <template id="report_invoice_delivery_note" inherit_id="account.report_invoice_document" name="PETSMART delivery note on invoice">
+        <xpath expr="//div[@id='total']" position="after">
+            <div t-if="o.move_type == 'out_invoice'" class="mt-2 mb-3">
+                <t t-set="pm_note_invoice" t-value="True"/>
+                <t t-call="petmart_wholesale.delivery_cost_note"/>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

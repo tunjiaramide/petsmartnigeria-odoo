@@ -1,7 +1,7 @@
 {
     'name': 'PETSMART Wholesale (B2B)',
     'summary': 'Wholesale shop: open catalogue, prices and ordering for approved customers, minimum order, stock status badges',
-    'version': '19.0.1.6.0',
+    'version': '19.0.1.7.0',
     'category': 'Website/Website',
     'author': 'PETSMART Nigeria',
     'license': 'LGPL-3',
@@ -25,6 +25,7 @@
         'views/product_views.xml',
         'views/templates.xml',
         'views/signup_templates.xml',
+        'views/delivery_note_templates.xml',
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,

@@ -115,7 +115,7 @@ body, .pm-header, .pm-home, .pm-footer, .pm-status {
 /* ---------- Hero ---------- */
 .pm-hero { border-radius: 24px; background: linear-gradient(120deg, #eaf0fc, #f8faff); overflow: hidden; position: relative; }
 /* image banners: the picture is the whole slide and links to the shop */
-.pm-hero__img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 592; object-fit: cover; }
+.pm-hero__img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 600; object-fit: cover; }
 .pm-hero__dots { margin-bottom: .8rem; button { width: .5rem !important; height: .5rem !important; border: 0 !important; border-radius: 999px; background: #b7c5e6 !important; background-clip: border-box !important; opacity: 1; margin: 0 .25rem; &.active { width: 1.6rem !important; background: $pm-blue !important; } } }
 
 /* ---------- Welcome bar under the slider ---------- */

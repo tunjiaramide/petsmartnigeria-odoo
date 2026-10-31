@@ -1,6 +1,14 @@
 from odoo import SUPERUSER_ID, api
 
 
+def _rename_delivery_method(env):
+    """PETSMART charges for goods only; staff price delivery after the order and send it to the
+    customer. Odoo's free delivery method stays (checkout needs one) but no longer reads as free."""
+    carrier = env.ref('delivery.free_delivery_carrier', raise_if_not_found=False)
+    if carrier:
+        carrier.name = 'Delivery (cost sent to you after ordering)'
+
+
 def post_init_hook(env):
     """One-time shop configuration for a wholesale (B2B) site."""
     # Anyone can browse the catalogue; prices and ordering are unlocked per customer on approval
@@ -18,3 +26,5 @@ def post_init_hook(env):
 
     # No overselling on products that existed before this module was installed.
     env['product.template'].with_context(active_test=False).search([]).write({'allow_out_of_stock_order': False})
+
+    _rename_delivery_method(env)

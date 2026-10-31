@@ -5,6 +5,7 @@ from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo.addons.portal.controllers.portal import CustomerPortal
+from odoo.addons.website.controllers.main import Website
 from odoo.addons.website_sale.controllers.cart import Cart
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
@@ -157,6 +158,21 @@ class PetmartSignup(AuthSignupHome):
                 'res_id': user.partner_id.id,
             })
         return res
+
+
+class PetmartLogin(Website):
+
+    def _login_redirect(self, uid, redirect=None):
+        """Customers who are not approved yet land on their application status page
+        instead of My Account, unless they were heading for a particular page (a link
+        from an email, a product page)."""
+        url = super()._login_redirect(uid, redirect=redirect)
+        if redirect and redirect not in ('/', '/my', '/shop', '/shop/cart'):
+            return url
+        user = request.env['res.users'].sudo().browse(uid)
+        if user._is_internal() or user.partner_id.commercial_partner_id.wholesale_state == 'approved':
+            return url
+        return '/wholesale/pending'
 
 
 class NigeriaOnlyAddress:

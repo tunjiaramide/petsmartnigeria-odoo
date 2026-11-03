@@ -24,6 +24,8 @@ class ProductTemplate(models.Model):
     petmart_is_back_in_stock = fields.Boolean(string='Back in stock', compute='_compute_petmart_flags')
     petmart_was_out_of_stock = fields.Boolean(copy=False)
     petmart_back_in_stock_until = fields.Datetime(copy=False)
+    # every size's barcode as one text, so the shop search box finds products by barcode
+    petmart_variants_barcode = fields.Char(compute='_compute_petmart_variants_barcode', store=True, index='trigram')
 
     @api.depends('is_storable', 'petmart_low_stock_threshold')
     def _compute_petmart_stock_status(self):
@@ -39,6 +41,12 @@ class ProductTemplate(models.Model):
             else:
                 product.petmart_stock_status = 'available'
 
+    @api.depends('product_variant_ids.barcode')
+    def _compute_petmart_variants_barcode(self):
+        for product in self:
+            product.petmart_variants_barcode = ' '.join(
+                product.product_variant_ids.filtered('barcode').mapped('barcode')) or False
+
     def _compute_petmart_flags(self):
         days = int(self.env['ir.config_parameter'].sudo().get_param('petmart.new_arrival_days', 30))
         now = fields.Datetime.now()
@@ -53,7 +61,7 @@ class ProductTemplate(models.Model):
     # ------------------------------------------------------------------
     @api.model
     def _get_website_sale_search_fields(self, search_in_description=True):
-        return super()._get_website_sale_search_fields(search_in_description) + ['petmart_brand']
+        return super()._get_website_sale_search_fields(search_in_description) + ['petmart_brand', 'petmart_variants_barcode']
 
     @api.model
     def _search_get_detail(self, website, order, options):

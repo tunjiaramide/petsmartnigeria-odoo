@@ -4,8 +4,8 @@ Custom Odoo modules for the PETSMART NIGERIA wholesale website. Hosted on **Odoo
 
 | module | what it does |
 |---|---|
-| `petmart_wholesale` | Business rules: anyone can browse the shop, prices and ordering only for signed-in approved customers, wholesale account approval, wholesale pricelist, minimum order, AVAILABLE / LOW STOCK / OUT OF STOCK (no quantities shown), 2% online-order discount, New Arrival / Back in stock tags, ₦ sign before the amount |
-| `petmart_theme` | Homepage, header, footer, styling and site categories |
+| `petmart_wholesale` | Business rules: anyone can browse the shop, prices and ordering only for signed-in approved customers, wholesale account approval, wholesale pricelist, minimum order, AVAILABLE / LOW STOCK / OUT OF STOCK (no quantities shown), 2% online-order discount, New Arrival / Back in stock tags, ₦ sign before the amount, "Product details" tab (dropdown sections under the product: Ingredients, Feeding Guide, …) |
+| `petmart_theme` | Homepage, header, footer, styling, site categories, and the product page dropdowns |
 
 Install order: `petmart_wholesale` first, then `petmart_theme`.
 

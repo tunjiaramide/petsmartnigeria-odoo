@@ -2,6 +2,9 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.http import request
+from odoo.tools import html2plaintext, is_html_empty
+
+from .product_section import STANDARD_SECTIONS
 
 STOCK_STATUS = [('available', 'Available'), ('low', 'Low stock'), ('out', 'Out of stock')]
 
@@ -26,6 +29,10 @@ class ProductTemplate(models.Model):
     petmart_back_in_stock_until = fields.Datetime(copy=False)
     # every size's barcode as one text, so the shop search box finds products by barcode
     petmart_variants_barcode = fields.Char(compute='_compute_petmart_variants_barcode', store=True, index='trigram')
+    # long description: dropdowns under the product (Ingredients, Feeding Guide, ...)
+    petmart_section_ids = fields.One2many('petmart.product.section', 'product_tmpl_id', string='Product details', copy=True)
+    # the dropdowns as plain text, so the shop search box still finds words that moved out of the description
+    petmart_sections_text = fields.Text(compute='_compute_petmart_sections_text', store=True, index='trigram')
 
     @api.depends('is_storable', 'petmart_low_stock_threshold')
     def _compute_petmart_stock_status(self):
@@ -47,6 +54,28 @@ class ProductTemplate(models.Model):
             product.petmart_variants_barcode = ' '.join(
                 product.product_variant_ids.filtered('barcode').mapped('barcode')) or False
 
+    @api.depends('petmart_section_ids.name', 'petmart_section_ids.content')
+    def _compute_petmart_sections_text(self):
+        for product in self:
+            product.petmart_sections_text = '\n'.join(
+                f"{section.name}\n{html2plaintext(section.content)}" for section in product._petmart_website_sections()
+            ) or False
+
+    def _petmart_website_sections(self):
+        """Dropdowns shown on the product page: a section left empty (e.g. just added) stays hidden."""
+        self.ensure_one()
+        return self.petmart_section_ids.filtered(lambda section: not is_html_empty(section.content))
+
+    def action_petmart_add_standard_sections(self):
+        """Add the usual dropdown titles that the product does not have yet, with empty content."""
+        for product in self:
+            existing = {name.strip().lower() for name in product.petmart_section_ids.mapped('name')}
+            last = max(product.petmart_section_ids.mapped('sequence'), default=0)
+            product.write({'petmart_section_ids': [
+                fields.Command.create({'name': name, 'sequence': last + 10 * (i + 1)})
+                for i, name in enumerate(n for n in STANDARD_SECTIONS if n.lower() not in existing)
+            ]})
+
     def _compute_petmart_flags(self):
         days = int(self.env['ir.config_parameter'].sudo().get_param('petmart.new_arrival_days', 30))
         now = fields.Datetime.now()
@@ -61,7 +90,10 @@ class ProductTemplate(models.Model):
     # ------------------------------------------------------------------
     @api.model
     def _get_website_sale_search_fields(self, search_in_description=True):
-        return super()._get_website_sale_search_fields(search_in_description) + ['petmart_brand', 'petmart_variants_barcode']
+        fields_ = super()._get_website_sale_search_fields(search_in_description) + ['petmart_brand', 'petmart_variants_barcode']
+        if search_in_description:
+            fields_.append('petmart_sections_text')
+        return fields_
 
     @api.model
     def _search_get_detail(self, website, order, options):

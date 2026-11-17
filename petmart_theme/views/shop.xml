@@ -22,4 +22,27 @@
         </xpath>
     </template>
 
+    <!-- Product page: long description as dropdowns, full width under the photo and buy box
+         (filled in the product form, "Product details" tab). The short description stays beside the photo. -->
+    <template id="product_details_sections" inherit_id="website_sale.product" name="PETSMART product detail dropdowns" priority="20">
+        <xpath expr="//div[@id='product_full_description']" position="before">
+            <t t-set="pm_sections" t-value="product._petmart_website_sections()"/>
+            <section t-if="pm_sections" class="pm-details container mb-5">
+                <div class="accordion accordion-flush" id="pm_details_accordion">
+                    <div t-foreach="pm_sections" t-as="section" class="accordion-item">
+                        <h2 class="accordion-header" t-attf-id="pm_details_head_{{section.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    t-attf-data-bs-target="#pm_details_body_{{section.id}}" aria-expanded="false"
+                                    t-attf-aria-controls="pm_details_body_{{section.id}}" t-out="section.name"/>
+                        </h2>
+                        <div t-attf-id="pm_details_body_{{section.id}}" class="accordion-collapse collapse"
+                             t-attf-aria-labelledby="pm_details_head_{{section.id}}">
+                            <div class="accordion-body" t-out="section.content"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
 </odoo>

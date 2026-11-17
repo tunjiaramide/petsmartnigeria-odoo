@@ -34,11 +34,19 @@
         <field name="name">Editor</field>
         <field name="sequence">20</field>
         <field name="privilege_id" ref="res_groups_privilege_petsmart"/>
-        <field name="comment">Everything an Uploader can do, plus approving or rejecting wholesale account registrations and editing customer contacts.</field>
+        <field name="comment">Everything an Uploader can do, plus approving or rejecting wholesale account registrations, editing customer contacts, and creating or changing discounts (Discount &amp; Loyalty programs).</field>
         <field name="implied_ids" eval="[
             (4, ref('group_petmart_uploader')),
             (4, ref('base.group_partner_manager')),
         ]"/>
+    </record>
+
+    <!-- Editors manage discounts (Discount &amp; Loyalty programs); Odoo shows those menus to Sales Administrators only -->
+    <record id="website_sale_loyalty.menu_loyalty" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('group_petmart_editor'))]"/>
+    </record>
+    <record id="sale_loyalty.menu_discount_loyalty_type_config" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('group_petmart_editor'))]"/>
     </record>
 
     <!-- Sales Administrators could approve accounts before these roles existed: they keep that right -->

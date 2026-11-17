@@ -381,6 +381,19 @@ $pm-font: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
     /* description / specs under the fold */
     .nav-tabs .nav-link { color: $pm-muted; font-weight: 600; &.active { color: $pm-blue; border-bottom-color: $pm-blue; } }
+
+    /* long description: one dropdown per section (Ingredients, Feeding Guide, ...) */
+    .pm-details .accordion { border-top: 1px solid $pm-line; }
+    .pm-details .accordion-item { border-bottom: 1px solid $pm-line; background: transparent; }
+    .pm-details .accordion-button { font-size: 1.05rem; font-weight: 600; color: $pm-ink; background: transparent;
+        padding: 1.25rem .5rem; box-shadow: none;
+        &:not(.collapsed) { color: $pm-blue; }
+        &:focus-visible { box-shadow: 0 0 0 .2rem rgba($pm-blue, .25); } }
+    .pm-details .accordion-body { padding: 0 .5rem 1.5rem; color: $pm-muted; font-size: .9rem; line-height: 1.7;
+        strong, b, th { color: $pm-ink; }
+        /* wide feeding tables scroll sideways on phones instead of squashing */
+        table { display: block; overflow-x: auto; max-width: 100%; font-size: .85rem; margin-bottom: 1rem; }
+        th, td { padding: .4rem .7rem; } }
 }
 
 /* ---------- Cart, checkout, account ---------- */

@@ -17,6 +17,38 @@
                        decoration-danger="petmart_stock_status == 'out'"/>
                 <field name="petmart_low_stock_threshold" invisible="not is_storable"/>
             </xpath>
+
+            <!-- Website text is split in two, like WooCommerce:
+                 short description beside the photo, long description as dropdowns under the product -->
+            <xpath expr="//group[@name='ecom_description']" position="attributes">
+                <attribute name="string">Short description (website, beside the photo)</attribute>
+            </xpath>
+            <xpath expr="//group[@name='ecom_description']/field[@name='description_ecommerce']" position="attributes">
+                <attribute name="placeholder">Keep it short: 2 to 6 lines or bullet points (key benefits). Ingredients, feeding guide, analysis etc. go in the "Product details" tab.</attribute>
+            </xpath>
+            <xpath expr="//page[@name='sales']" position="after">
+                <page string="Product details" name="petmart_details">
+                    <div class="text-muted mb-3">
+                        Each line becomes a dropdown under the product on the website (closed until the customer clicks it).
+                        Drag the handle to change the order. Tables, bold and lists work in the content.
+                    </div>
+                    <button name="action_petmart_add_standard_sections" type="object" class="btn btn-secondary mb-3"
+                            string="Add standard sections" icon="fa-plus"
+                            help="Adds Ingredients, Calorie Content, Feeding Guide and Guaranteed Analysis (only the ones missing), with empty content to fill in."/>
+                    <field name="petmart_section_ids" context="{'default_product_tmpl_id': id}">
+                        <list>
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                        </list>
+                        <form string="Product detail section">
+                            <group>
+                                <field name="name" placeholder="e.g. Ingredients"/>
+                            </group>
+                            <field name="content" placeholder="Paste or type the text for this dropdown. Use '/' for tables, lists and headings."/>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
         </field>
     </record>
 

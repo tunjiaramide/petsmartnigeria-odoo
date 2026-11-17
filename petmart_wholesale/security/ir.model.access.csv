@@ -5,3 +5,7 @@ access_petmart_brand_user,petmart.brand user,model_petmart_brand,base.group_user
 access_petmart_brand_portal,petmart.brand portal,model_petmart_brand,base.group_portal,1,0,0,0
 access_petmart_brand_public,petmart.brand public,model_petmart_brand,base.group_public,1,0,0,0
 access_product_ribbon_petmart_uploader,product.ribbon uploader,website_sale.model_product_ribbon,group_petmart_uploader,1,1,1,1
+access_petmart_product_section_manager,petmart.product.section manager,model_petmart_product_section,product.group_product_manager,1,1,1,1
+access_petmart_product_section_user,petmart.product.section user,model_petmart_product_section,base.group_user,1,0,0,0
+access_petmart_product_section_portal,petmart.product.section portal,model_petmart_product_section,base.group_portal,1,0,0,0
+access_petmart_product_section_public,petmart.product.section public,model_petmart_product_section,base.group_public,1,0,0,0

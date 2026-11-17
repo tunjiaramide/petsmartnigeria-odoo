@@ -9,3 +9,8 @@ access_petmart_product_section_manager,petmart.product.section manager,model_pet
 access_petmart_product_section_user,petmart.product.section user,model_petmart_product_section,base.group_user,1,0,0,0
 access_petmart_product_section_portal,petmart.product.section portal,model_petmart_product_section,base.group_portal,1,0,0,0
 access_petmart_product_section_public,petmart.product.section public,model_petmart_product_section,base.group_public,1,0,0,0
+access_loyalty_program_petmart_editor,loyalty.program editor,loyalty.model_loyalty_program,group_petmart_editor,1,1,1,1
+access_loyalty_rule_petmart_editor,loyalty.rule editor,loyalty.model_loyalty_rule,group_petmart_editor,1,1,1,1
+access_loyalty_reward_petmart_editor,loyalty.reward editor,loyalty.model_loyalty_reward,group_petmart_editor,1,1,1,1
+access_loyalty_mail_petmart_editor,loyalty.mail editor,loyalty.model_loyalty_mail,group_petmart_editor,1,1,1,1
+access_loyalty_card_petmart_editor,loyalty.card editor,loyalty.model_loyalty_card,group_petmart_editor,1,1,1,0

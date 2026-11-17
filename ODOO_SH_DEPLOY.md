@@ -98,7 +98,8 @@ in this order, lets you check the Nigerian accounting loaded before anything els
 2. On the user form, under **PETSMART → Store role**, pick one:
    - **Uploader** – creates, edits, publishes and deletes products and shop categories, sets wholesale
      prices and stock, sees orders. Cannot approve accounts.
-   - **Editor** – everything an Uploader can do, plus approving or rejecting wholesale accounts.
+   - **Editor** – everything an Uploader can do, plus approving or rejecting wholesale accounts and
+     creating or changing discounts (Website → eCommerce → Loyalty → Discount & Loyalty).
 
    Sales Administrators and Odoo administrators have Editor rights automatically. Neither role can change
    settings or create users.
